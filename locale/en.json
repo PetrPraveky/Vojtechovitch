@@ -1,0 +1,29 @@
+{
+    "UB_LB_text": "System menu",
+
+    "UB_LSM_option_1": "Basic calculator",
+    "UB_LSM_option_2": "Unit tranfer",
+    "UB_LSM_option_3": "Physics calculator",
+    "UB_LSM_option_4": "Render funcion graphs",                
+    "UB_LSM_option_5": "Complex claculator",
+    "UB_LSM_option_6": "End",        
+
+    "UB_SB_text": "Settings",
+
+    "UB_SSM_option_1": "Appearance change",
+    "UB_SSM_option_2": "Localization change",
+
+    "DL_MW_title": "Appearance change",
+    "DL_MC_title": "Appearance change options",
+    "DL_MAC_button": "Accpet",
+    "DL_MCA_button": "Cancel",
+
+    "LT_title": "Localization change",
+    "L_title": "Localization options",
+
+    "BC_title": "Mód základní kalkulačky",
+
+    "dark_mode": "Dark mode",
+    "light_mode": "Light mode",
+    "custom": "Custom"
+}

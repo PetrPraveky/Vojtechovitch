@@ -1,0 +1,28 @@
+UB_LB_text == Upper Bar List Button text
+
+UB_LSM_option_1 == Upper Bar List Sub Menu Option 1
+UB_LSM_option_2 == Upper Bar List Sub Menu Option 2
+UB_LSM_option_3 == Upper Bar List Sub Menu Option 3
+UB_LSM_option_4 == Upper Bar List Sub Menu Option 4
+UB_LSM_option_5 == Upper Bar List Sub Menu Option 5
+UB_LSM_option_6 == Upper Bar List Sub Menu Option 6
+
+UB_SB_text == Upper Bar Settings Button text
+
+UB_SSM_option_1 == Upper Bar Settings Sub Menu Option 1
+UB_SSM_option_2 == Upper Bar Settings Sub Menu Option 2
+
+DL_MW_title == dark light mode window title
+DL_MC_title == dark light mode change title
+DL_MAC_button == dark light mode accept button
+DL_MCA_button == dark light mode cancel button
+
+LT_tittle == localization type title
+L_title == localization title
+
+BC_title = basic calculator title
+
+dark_mode == dark mode
+light_mode == light mode
+custom == custom
+

@@ -1,0 +1,48 @@
+{
+    "locale": "cs.json",
+    "locale_list": [
+        "cs.json",
+        "en.json"
+    ],
+    "main_root_resolution": "1280x720",
+    "light_dark_mode_resolution": "276x164",
+    "locale_type_resolution": "276x144",
+    "dark_light_mode": 1,
+    "operators_list": [
+        "ADD",
+        "SUB",
+        "MUL",
+        "DIV",
+        "SQ",
+        "SQROOT",
+        "NSQ",
+        "NROOT"
+    ],
+    "operators_chars": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+    ],
+    "add_operators_list": [
+        "LBRACKET",
+        "RBRACKET"
+    ],
+    "add_operators_char": [
+        "(",
+        ")"
+    ],
+    "number_list": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        0
+    ]
+}
