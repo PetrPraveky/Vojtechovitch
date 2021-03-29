@@ -78,7 +78,7 @@ class Func(OpenFile, calc.BasicCalculator):
         else: #Vyčištění poslední hodnoty/znaku
             current = rend.render_bc_input_box.get() #Získání dat z řádku
             if current != "": #Testuje, zda-li je řádek prázdný
-                current = current.replace(current[-1], "") #Vymaže poslední znak
+                current = current[:-1] #Vymaže poslední znak
                 rend.render_bc_input_box.delete(0, 'end') #Vymazní řádku
                 rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
             else: #Jinak přeskočit příkaz
@@ -117,7 +117,7 @@ class Func(OpenFile, calc.BasicCalculator):
                         pass
                     elif current == "" and str(var) == 'SUB': #Pokud-li je řádek prázdný a operace je odčítání, vypíše "0-"
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                        rend.ender_bc_input_box.insert(0, "0"+'-') #Vypsání nového řádku
+                        rend.render_bc_input_box.insert(0, "0"+'-') #Vypsání nového řádku
                     elif current != "": #Pokud-li řádek není prázdný
                         if current[-1] == ".": #Pokud-li je poslední znak desetinná čárka, přeskočí
                             pass
