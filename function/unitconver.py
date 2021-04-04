@@ -30,14 +30,11 @@ class OpenFile():
     
 class UnitConverter():
     def UC_convert(self, l_val, r_val, val, val_list, conv_val):
-        if r_val == l_val:
-            try:
-                return float(conv_val)
-            except:
-                return 'Err'
-        else:
-            pass
         try:
+            if r_val == l_val:
+                return float(conv_val)
+            else:
+                pass
             if r_val in unit_conv['basic-unit']:
                 if l_val in unit_conv['basic-unit']:
                     pass
