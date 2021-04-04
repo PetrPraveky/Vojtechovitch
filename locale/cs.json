@@ -3,11 +3,11 @@
 
     "UB_LSM_option_title_1": "Matematika",
     "UB_LSM_option_1": "Základní kalkulačka",
-    "UB_LSM_option_2": "Převody jednotek",
-    "UB_LSM_option_3": "Fyzikální kalkulačka",
-    "UB_LSM_option_4": "Vykreslní grafů funkcí",                
-    "UB_LSM_option_5": "Komplexní kalkulačka",
-    "UB_LSM_option_6": "Konec",        
+    "UB_LSM_option_2": "Vykreslení grafu funkcí",
+    "UB_LSM_option_title_2": "Fyzika",
+    "UB_LSM_option_3": "Převody jednotek",
+    "UB_LSM_option_4": "Fyzikální kalkulačka",
+    "UB_LSM_option_end": "Ukončit",
 
     "UB_SB_text": "Nastavení",
 
@@ -22,6 +22,7 @@
     "LT_title": "Změna lokalizace",
     "L_title": "Možnosti lokalizace",
 
+    
     "BC_title": "Mód základní kalkulačky",
 
     "UC_title": "Převody jednotek",

@@ -285,8 +285,6 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
             rend.ucl_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][1])
             rend.ucr_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][1])
         
-        rend.render_uc_l_entry.delete(0, 'end')
-        
         rend.render_uc_r_entry.delete(0, 'end') 
         rend.render_uc_r_entry.config(state='disabled')
         
@@ -303,7 +301,6 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         return
     
     def func_unit_conver(self, l_val, r_val, val, val_list, conv_val):
-        print(l_val, r_val, val, val_list, conv_val)
         rend.render_uc_r_entry.delete(0, 'end') 
         
         y = self.UC_convert(l_val, r_val, val, val_list, conv_val)
@@ -311,3 +308,22 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         rend.render_uc_r_entry.config(state='normal')
         rend.render_uc_r_entry.insert(0, y)
         return
+    
+    def func_unit_delete(self):
+        rend.render_uc_l_entry.delete(0, 'end') 
+        
+        rend.render_uc_r_entry.delete(0, 'end') 
+        rend.render_uc_r_entry.config(state='disabled')
+        
+    def func_unit_swith(self):
+        try:
+            x = float(rend.render_uc_l_entry.get())
+            y = float(rend.render_uc_r_entry.get())
+            
+            rend.render_uc_l_entry.delete(0, 'end')
+            rend.render_uc_l_entry.insert(0, y)
+            
+            rend.render_uc_r_entry.delete(0, 'end') 
+            rend.render_uc_r_entry.insert(0, x)
+        except:
+            pass

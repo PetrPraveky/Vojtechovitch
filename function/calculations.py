@@ -109,7 +109,6 @@ class BasicCalculator():
                             break
                     return l_bracket_index, r_bracket_index
                 
-                #for n in cycle(range(0, 1)):
                 l_bracket_index, r_bracket_index = brackets_index()
 
                 index = int(l_bracket[l_bracket_index])+1

@@ -1,29 +1,30 @@
-from tkinter import *
-from tkinter import font 
-from tkinter import ttk
-import json
-import os
+from tkinter import * #Připojení modulu tkinter
+from tkinter import font #Připojení modulu tkinter s podmodulem font
+from tkinter import ttk #Připojení modulu tkinter s podmudulem ttk
+import json #Připojení modulu json
+import os #Připojení modulu os
 
-import calculations as calc
-import unitconver as units
-import funcs as funcs
+import calculations as calc #Připojení modulu kalkulačky
+import unitconver as units #Připojení modulu převodů jednotek
+import funcs as funcs #Připojení modulu funkcí
 
-default = 1
-calculator_option = default
+default = 0 #Základní hodnota pro změnu módu kalkulačky
+calculator_option = default #Přiřazení základní hodnoty
 
-unit_data_list = ["size", "weight", "time"]
-unit_conv_list = ['size-conv', "weight-conv", "time-conv"]
+unit_data_list = ["size", "weight", "time"] #List veličin
+unit_conv_list = ['size-conv', "weight-conv", "time-conv"] #List převodů jednotek
 
+#Funkce pro oznámení připojení modulu render
 def render_connected():
     print("     render.py")
 
 def main_connected():
     print("\nmain.py has been connected to file:")
     #Připojení modulu kalkulací
-    calc.calc_connected()
-    funcs.func_connected()
-    units.unit_conv_connected()
-    render_connected()
+    calc.calc_connected() #Připojení modulu kalkulačky
+    funcs.func_connected() #Připojení modulu funkcí
+    units.unit_conv_connected() #Připojení modulů převodů jednotek
+    render_connected() #Připojení modulu render
     print("\n")
 
 class OpenFile():
@@ -33,18 +34,19 @@ class OpenFile():
         data = json.load(g) #Načtení dat
         g.close() #Zavření původního souboru
     #Otevření souborů jazka
-    with open(os.path.join('','locale', data['locale']), "r", encoding="UTF-8") as f: #Otevření lkkalizace
+    with open(os.path.join('','locale', data['locale']), "r", encoding="UTF-8") as f: #Otevření lokalizace
         locale = json.load(f) #Načtení lokalizace
         f.close() #Zavření původního souboru
         locale_default = 0
-    with open(os.path.join('', 'data', 'unit_conv_data.json'), 'r', encoding='UTF-8') as i:
-        unit_conv = json.load(i)
-        i.close()
+    #Otevření souboru dat s převodama jednotek
+    with open(os.path.join('', 'data', 'unit_conv_data.json'), 'r', encoding='UTF-8') as i: #Otevření dat
+        unit_conv = json.load(i) #Načtení dat
+        i.close() #Zavření původního souboru
     os.system('cls') #Vyčištění konzole
     print(f"DATA: (data.json)\n{data}") #Vypsnání obsahu "data.json"
     print(f"\nLOCALES: ({os.path.join('locale', data['locale'])})\n{locale}") #Vypsání obsahu "locale"
     print("\n")
-    print(f"\nUNIT DATA: (data/unit_conv_data.json) \n{unit_conv}")
+    print(f"\nUNIT DATA: (data/unit_conv_data.json) \n{unit_conv}") #Vypsání obsahu "unit_conv_data.json"
     mode = data['dark_light_mode'] #Přiřazení správné možnosti pro změnu vzhledu
         
 #Třída renderu
@@ -62,15 +64,16 @@ class Render(funcs.Func):
         self.render_upper_bar()
         #Vykreslení horní lišty
         render_upper_bar_frame.grid(row = 0, column=0, sticky='ew')
-        #Vykreslení celého pole
-        if option == 0:
-            self.render_basic_calculator()
-            render_bc_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30)
-        elif option == 1:
-            self.render_unit_conver()
-            render_uc_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30)
-        else:
+        #Výběr vykleslení správného okna
+        if option == 0: #Pokud je možnost 0 == kalkulačka
+            self.render_basic_calculator() #Funkce renderu kalkulačky
+            render_bc_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30) #Render celé kalkulačky
+        elif option == 1: #Pokud je možnost 1 == převod jednotek
+            self.render_unit_conver() #Funkce renderu převodů jednotek
+            render_uc_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30) #Render celých převodů jednotek
+        else: 
             pass
+        #Vykreslení celého okna
         render_main_frame.pack(fill='both', expand="True")
     
     #Funkce pro určení dark/light módem
@@ -90,11 +93,11 @@ class Render(funcs.Func):
             upper_bar_frame_submenu_color = "#595959" #Barva podmenu
             upper_bar_frame_submenu_color_hover = '#808080' #Barva podmenu, když je na něm myš
             #Kalkulačka
-            calc_background_color_1 = '#242424'
-            calc_background_color_2 = '#424242'
-            calc_background_color_2_hover = '#595959'
+            calc_background_color_1 = '#242424' #Barva pozadí kalkulačky 1
+            calc_background_color_2 = '#424242' #Barva pozadí kalkulačky 2
+            calc_background_color_2_hover = '#595959' #Barva pozadí kalkulačky 2 po přejetí myši
             #Jednotky
-            unit_e_title_background_color_1 = '#303030'
+            unit_e_title_background_color_1 = '#303030' #Barva pozadí u převodů jednotek
             
         elif mode == 0: #Světlý režim
             main_background_color = '#f5f5f5' #Barva hlavního pozadí
@@ -108,9 +111,11 @@ class Render(funcs.Func):
             upper_bar_frame_submenu_color = "#e0e0e0" #Barva podmenu
             upper_bar_frame_submenu_color_hover = '#cccccc' #Barva podmenu, když je na něm myš
             #Kalkulačka
-            calc_background_color_1 = '#d1d1d1'
-            calc_background_color_2 = '#b3b3b3'
-            calc_background_color_2_hover = '#e0e0e0'
+            calc_background_color_1 = '#d1d1d1' #Barva pozadí kalkulačky 1
+            calc_background_color_2 = '#b3b3b3' #Barva pozadí kalkulačky 2
+            calc_background_color_2_hover = '#e0e0e0' #Barva pozadí kalkulačky 2 po přejetí myši
+            #Jednotky
+            unit_e_title_background_color_1 = '#dbdbdb' #Barva pozadí u převodů jednotek
             
         else: #Custom
             main_background_color = '#0d0d0d'
@@ -121,7 +126,7 @@ class Render(funcs.Func):
         calculator_option = 0
         #Vytovření rámu pro základkní kalkulačku a nastavení listu
         render_bc_frame = Frame(render_main_frame, bg=calc_background_color_1, relief='sunken', borderwidth="2", padx=4, pady=4)
-        render_upper_list_submenu.entryconfig("×  "+locale['UB_LSM_option_1'], state="disabled")
+        render_upper_list_submenu.entryconfig("×  "+locale['UB_LSM_option_1'], state="disabled") #Vypnutí zvolení tohoto okna v menu
         #Titulek
         render_bc_title = Label(render_bc_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['BC_title'], relief='raised')
         render_bc_title.grid(row=1, column=0, padx=5, pady=5, columnspan=7, sticky='we')
@@ -202,39 +207,41 @@ class Render(funcs.Func):
         render_bc_button_4_5.grid(row=6, column=5, sticky='W', padx=5, pady=5)
         render_bc_button_4_6.grid(row=6, column=6, sticky='W', padx=5, pady=5)
     
+    #Funkce pro vykreslení převodů jednotek
     def render_unit_conver(self):
         global calculator_option, render_uc_frame, render_uc_l_menu, ucl_var, uce_var, ucr_var, render_uc_r_menu, render_uc_r_entry, render_uc_l_entry
         calculator_option = 1
-        
+        #Vytvoření základního rámu okna
         render_uc_frame = Frame(render_main_frame, bg=calc_background_color_1, relief='sunken', borderwidth="2", padx=4, pady=4)
-        render_upper_list_submenu.entryconfig("×  "+locale['UB_LSM_option_2'], state="disabled")
-        
+        render_upper_list_submenu.entryconfig("×  "+locale['UB_LSM_option_3'], state="disabled") #Vypnutí zvolení tohoto okna v menu
+        #Render titulu
         render_uc_title = Label(render_uc_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['UC_title'], relief='raised')
-        
+        #Vytvoření tkinter promněnných
         uce_var = StringVar()
         uce_var.set(locale['unit_data'][0])
-        
         ucl_var = StringVar()
         ucl_var.set(unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]][1])
-        
         ucr_var = StringVar()
         ucr_var.set(unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]][1])
-        
-        render_uc_e_title = Label(render_uc_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['UC_e_title']+" :", relief='flat')
-        render_uc_e_menu = OptionMenu(render_uc_frame, uce_var, *locale['unit_data'], command=lambda x:self.func_unit_mode_change(unit_data_list[locale['unit_data'].index(uce_var.get())]))
-        render_uc_e_menu.configure(bg=unit_e_title_background_color_1, font='bold', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, relief='flat', cursor='hand2')
-        render_uc_e_sep = ttk.Separator(render_uc_frame, orient='horizontal')
-        
-        render_uc_l_menu = OptionMenu(render_uc_frame, ucl_var, *unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]])
-        render_uc_r_menu = OptionMenu(render_uc_frame, ucr_var, *unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]])
-        render_uc_l_menu.configure(width=7, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2')
-        render_uc_r_menu.configure(width=7, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2')
-        render_uc_l_entry = Entry(render_uc_frame, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, font=('bold', 11), width=10)
-        render_uc_r_entry = Entry(render_uc_frame, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, font=('bold', 11), width=10, state='disabled', disabledbackground=upper_bar_frame_submenu_color, disabledforeground=main_text_color)
+        #Render druhé řady
+        render_uc_e_title = Label(render_uc_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['UC_e_title']+" :", relief='flat') #Render titulku
+        render_uc_e_menu = OptionMenu(render_uc_frame, uce_var, *locale['unit_data'], command=lambda x:self.func_unit_mode_change(unit_data_list[locale['unit_data'].index(uce_var.get())])) #Render listu možností pro převody jednotek
+        render_uc_e_menu.configure(bg=unit_e_title_background_color_1, font='bold', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, relief='flat', cursor='hand2') #Úprava listu možností pro převod jednotek
+        render_uc_e_sep = ttk.Separator(render_uc_frame, orient='horizontal') #Vytvoření separátoru
+        #Render třetí řady
+        render_uc_l_menu = OptionMenu(render_uc_frame, ucl_var, *unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]]) #Render levého listu možností pro jednotky
+        render_uc_r_menu = OptionMenu(render_uc_frame, ucr_var, *unit_conv[unit_data_list[locale['unit_data'].index(uce_var.get())]]) #Redner pravého listu možnost pro jednotky
+        render_uc_l_menu.configure(width=7, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2') #Úprava levého listu možností pro jednotky
+        render_uc_r_menu.configure(width=7, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2') #Úprava pravého listu možností pro jednotky
+        render_uc_l_entry = Entry(render_uc_frame, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, font=('bold', 11), width=10) #Levý vstup hodnoty jednotky
+        render_uc_r_entry = Entry(render_uc_frame, bg=upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=main_text_color, font=('bold', 11), width=10, state='disabled', disabledbackground=upper_bar_frame_submenu_color, disabledforeground=main_text_color) #Pravý výstup hodnoky jednotky
         render_uc_equal = Button(render_uc_frame, bg=calc_background_color_1, borderwidth=2, relief='raised', fg=main_text_color, font=('bold', 10), text='=', width=5, activebackground=calc_background_color_2_hover, 
                                  activeforeground=main_text_color, cursor='hand2', command=lambda: self.func_unit_conver(ucl_var.get(), ucr_var.get(), unit_conv_list[locale['unit_data'].index(uce_var.get())], 
-                                 unit_data_list[locale['unit_data'].index(uce_var.get())], render_uc_l_entry.get()))
-        
+                                 unit_data_list[locale['unit_data'].index(uce_var.get())], render_uc_l_entry.get())) #Tlačítko pro převod jednotek
+        render_uc_delete = Button(render_uc_frame, bg=calc_background_color_1, borderwidth=2, relief='raised', fg=main_text_color, font=('bold', 10), text='C', activebackground=calc_background_color_2_hover, width=3,
+                                 activeforeground=main_text_color, cursor='hand2', command=lambda: self.func_unit_delete()) #Tlačítko pro vymazání textu z vstupů
+        render_uc_switch = Button(render_uc_frame, bg=calc_background_color_1, borderwidth=2, relief='raised', fg=main_text_color, font=('bold', 10), text='↔', activebackground=calc_background_color_2_hover, width=3,
+                                 activeforeground=main_text_color, cursor='hand2', command=lambda: self.func_unit_swith()) #Tlačítko pro zaměnění textu z vstupů
         #Render prvků
         #Render první řady
         render_uc_title.grid(row=1, column=0, padx=5, pady=5, columnspan=7, sticky='we')
@@ -242,13 +249,15 @@ class Render(funcs.Func):
         render_uc_e_title.grid(row=2, column=0, sticky='we', padx=5, pady=5, columnspan=3)
         render_uc_e_menu.grid(row=2, column=3, sticky='we', padx=5, pady=5, columnspan=2)
         #Render třetí řady/separátoru
-        render_uc_e_sep.grid(row=3, column=0, columnspan=5, sticky='we', padx=5, pady=5)
+        render_uc_e_sep.grid(row=3, column=0, columnspan=7, sticky='we', padx=5, pady=5)
         #Render čtvrté řady
         render_uc_l_entry.grid(row=4, column=0, sticky='we', padx=5, pady=5, ipady=3, ipadx=3)
         render_uc_l_menu.grid(row=4, column=1, sticky='we', padx=5, pady=5)
         render_uc_equal.grid(row=4, column=2, sticky='we', padx=5, pady=5)
         render_uc_r_entry.grid(row=4, column=3, sticky='we', padx=5, pady=5, ipady=3, ipadx=3) 
-        render_uc_r_menu.grid(row=4, column=4, sticky='we', padx=5, pady=5)      
+        render_uc_r_menu.grid(row=4, column=4, sticky='we', padx=5, pady=5)
+        render_uc_delete.grid(row=4, column=5, sticky='we', padx=5, pady=5)
+        render_uc_switch.grid(row=4, column=6, sticky='we', padx=5, pady=5)      
            
     #Funkce pro vytvoření horní lišty
     def render_upper_bar(self):
@@ -268,15 +277,17 @@ class Render(funcs.Func):
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_title_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
         render_upper_list_submenu.add_separator()
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_BC())
-        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_unit())
-        # render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_3'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
-        # render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_4'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state="disabled")
-        # render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_5'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_BC())
         render_upper_list_submenu.add_separator()
-        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_6'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_quit(self.main_root))
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_title_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
+        render_upper_list_submenu.add_separator()
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_3'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_unit())
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_4'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_unit())
+        render_upper_list_submenu.add_separator()
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_end'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_quit(self.main_root))
         #Přidání položek do podlistu pro 2. tlačítko
         render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=self.render_dark_light_mode_window)
-        render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=self.render_locale_type_window)
+        render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled', command=self.render_locale_type_window)
         #Zpárování podlistů k tlačítkům
         render_upper_settings_btn.config(menu= render_upper_settings_submenu)
         render_upper_list_btn.config(menu= render_upper_list_submenu)
