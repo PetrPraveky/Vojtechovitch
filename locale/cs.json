@@ -1,6 +1,7 @@
 {
     "UB_LB_text": "Nabídka systémů",
 
+    "UB_LSM_option_title_1": "Matematika",
     "UB_LSM_option_1": "Základní kalkulačka",
     "UB_LSM_option_2": "Převody jednotek",
     "UB_LSM_option_3": "Fyzikální kalkulačka",
@@ -22,6 +23,17 @@
     "L_title": "Možnosti lokalizace",
 
     "BC_title": "Mód základní kalkulačky",
+
+    "UC_title": "Převody jednotek",
+    "UC_e_title": "Nastavení módu",
+
+
+    "unit_data": [
+        "Vzdálenost",
+        "Hmotnost",
+        "Čas"
+    ],
+
 
     "dark_mode": "Tmavý režim",
     "light_mode": "Světlý režim",

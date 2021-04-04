@@ -1,6 +1,5 @@
 import json
 import os
-import operator
 import math
 from itertools import cycle
 import time
@@ -30,7 +29,6 @@ class BasicCalculator():
                 number = number[:-1]
             n = 0
             for n in range(len(number)):
-                print(number_list)
                 try:
                     int(number[n])
                     number_var += number[n]
@@ -77,33 +75,107 @@ class BasicCalculator():
                 else:
                     break
             
-            print(number_list)
-            
-            x = self.BC_exponent(number_list)
+            x = self.BC_start(number_list)
             
             time_end = time.time()
             print(f'Operation complete in: {time_end-time_start}')
-            # return x
+            return x
+    
+    def BC_start(self, number_list):
+        if '(' in number_list:
+            y = self.BC_brackets(number_list)
+        else:
+            y = self.BC_calculation(number_list)
+            y = y[0]
+        return y
+    
     
     def BC_brackets(self, number_list):
-        
-        return
+        if "(" in number_list:
+            for n in cycle(range(0, 1)):
+                global l_bracket_index, r_bracket_index
+                l_bracket_index, r_bracket_index = 0, 0
+                l_bracket = self.list_duplicates_of(number_list, '(')
+                r_bracket = self.list_duplicates_of(number_list, ')')
+                
+                def brackets_index():
+                    l_bracket_index = l_bracket.index(max(l_bracket))
+                    r_bracket_index = r_bracket.index(min(r_bracket))
+                    for n in cycle(range(0, 1)):
+                        if int(l_bracket[l_bracket_index]) > int(r_bracket[r_bracket_index]):
+                            r_bracket_index += 1
+                            continue
+                        else:
+                            break
+                    return l_bracket_index, r_bracket_index
+                
+                #for n in cycle(range(0, 1)):
+                l_bracket_index, r_bracket_index = brackets_index()
+
+                index = int(l_bracket[l_bracket_index])+1
+                brackets_num = []
+                for n in cycle(range(0, 1)):
+                    if index == r_bracket[r_bracket_index]:
+                        break
+                    else:
+                        brackets_num.append(number_list[index])
+                        index += 1
+                
+                if len(brackets_num) == 1:
+                    number_list[l_bracket[l_bracket_index]] = float(brackets_num[0])
+                    remove_index = l_bracket[l_bracket_index]+1
+                    for n in cycle(range(0, 1)):
+                        if remove_index > r_bracket[r_bracket_index]:
+                            break
+                        else:
+                            number_list.pop(l_bracket[l_bracket_index]+1)
+                            remove_index += 1
+                            continue
+                else:
+                    for n in range(brackets_num.count('+')+brackets_num.count('-')+brackets_num.count('*')+brackets_num.count('/')+brackets_num.count('^')):
+                        y = self.BC_calculation(brackets_num)
+                        brackets_num = y
+                    number_list[l_bracket[l_bracket_index]] = y[0]
+                    remove_index = l_bracket[l_bracket_index]+1
+                    for n in cycle(range(0, 1)):
+                        if remove_index > r_bracket[r_bracket_index]:
+                            break
+                        else:
+                            number_list.pop(l_bracket[l_bracket_index]+1)
+                            remove_index += 1
+                            continue
+                    
+                if "(" not in number_list:
+                    break
+                else:
+                    continue
+
+        if len(number_list) != 1:
+            for n in cycle(range(0,1)):
+                y = self.BC_calculation(number_list)
+                number_list = y
+                if len(number_list) == 1:
+                    break
+                else:
+                    continue
+            
+        return number_list[0]
     
     def BC_calculation(self, number_list):
-        add_list, equal_list = [], []
         for n in cycle(range(0,1)):
             try:
+                #Mocnina
+                if '^' in number_list:
+                    number_list = self.BC_exponent(number_list)
                 #Dělení x násobení
-                if "/" in number_list or "*" in number_list:
+                elif "/" in number_list or "*" in number_list:
                     try:
                         div_var =  number_list.index('/')
                         mul_var = number_list.index('*')
                         if div_var < mul_var:
-                            print('div')
                             number_list = self.BC_div(number_list)
                             continue 
                         elif div_var > mul_var:
-                            print('mul')
                             number_list = self.BC_mul(number_list)
                             continue
                     except:
@@ -133,69 +205,21 @@ class BasicCalculator():
                 print(err)
                 break
             
-        return number_list[0]
+        return number_list
             
     def BC_exponent(self, number_list):
-        if "(" in number_list:
-            equal = []
-            m = 0
-            lbr, rbr, lbr_var, rbr_var = 0, 0, 0, 0
-            for n in cycle(range(0, 1)):
-                if number_list[m] == "(":
-                    lbr = m
-                    lbr_var += 1
-                    m += 1
-                elif number_list[m] == ")":
-                    rbr = m
-                    rbr_var += 1
-                    m += 1
-                else:
-                    m += 1
-                if lbr_var != 0:
-                    if rbr_var == lbr_var:
-                        n = lbr+1
-                        print(lbr)
-                        print(rbr)
-                        print(n)
-                        for p in range(0, int(rbr-lbr)):
-                            equal.append(number_list[n])
-                            n += 1
-                            print(equal)
-                            if n-lbr == rbr-lbr:
-                                break
-                        if len(equal) > 1:
-                            y = self.BC_calculation(equal)
-                            equal.clear()
-                            equal.append(y)
-                            break
-                        
-                        
-                            
-                    if rbr_var > lbr_var:
-                        return
-                        
-                if m == len(number_list):
-                    break
-            
-            # try:
-            if lbr == 0:
-                number_list = equal + number_list[int(rbr+1):]
-            else:
-                print(1)
-                number_list = number_list[:(lbr)] + equal + number_list[(rbr+1):]
-                
-            # print(number_list)
-            
-            return
-        else:
-            return
-        return
+        equal = []
+        x = number_list.index("^")
+        
+        equal.append(str(math.pow(float(number_list[x-1]), float(number_list[x+1]))))
+        y = number_list[:(x-1)] + equal + number_list[(x+2):]
+        
+        return y
     
     def BC_mul(self, number_list):
         equal = []
         x = number_list.index("*")
         
-        print(number_list[x+1])
         equal.append(str(float(number_list[x-1])*float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -205,7 +229,6 @@ class BasicCalculator():
         equal = []
         x = number_list.index("/")
         
-        print(number_list[x+1])
         equal.append(str(float(number_list[x-1])/float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -215,7 +238,6 @@ class BasicCalculator():
         equal = []
         x = number_list.index("+")
         
-        print(number_list[x+1])
         equal.append(str(float(number_list[x-1])+float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -225,14 +247,20 @@ class BasicCalculator():
         equal = []
         x = number_list.index("-")
         
-        print(number_list[x+1])
         equal.append(str(float(number_list[x-1])-float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
         return y
     
-    def BC_brack_r(self, number_list, num):
-        return
-    
-    def BC_brack_l(self, number_list, num):
-        return
+    def list_duplicates_of(self, seq,item):
+        start_at = -1
+        locs = []
+        while True:
+            try:
+                loc = seq.index(item,start_at+1)
+            except ValueError:
+                break
+            else:
+                locs.append(loc)
+                start_at = loc
+        return locs

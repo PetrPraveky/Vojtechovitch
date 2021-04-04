@@ -1,8 +1,10 @@
 import json
 import os
+from tkinter import OptionMenu
 
 import calculations as calc
 import render as rend
+import unitconver as units
 from render import *
 
 def func_connected():
@@ -11,7 +13,7 @@ def func_connected():
 class OpenFile():
     #Otevření "data.json" a "locale" souborů
     def file_opener(self):
-        global locale_file, data, locale, locale_default #Registrování proměnných
+        global locale_file, data, locale, locale_default, unit_data, unit_conv #Registrování proměnných
         with open(os.path.join('','data.json'), "r") as g: #Otevření dat
             data = json.load(g) #Načtení dat
             g.close() #Zavření původního souboru
@@ -20,22 +22,36 @@ class OpenFile():
             locale = json.load(f) #Načtení lokalizace
             f.close() #Zavření původního souboru
             locale_default = 0
+        with open(os.path.join('', 'data', 'unit_conv_data.json'), 'r', encoding='UTF-8') as i:
+            unit_conv = json.load(i)
+            i.close()
     file_opener(0)
 
-class Func(OpenFile, calc.BasicCalculator):
+class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
     #Proměnná pro změnu jazyka
     global new_locale
     new_locale = data['locale']
     #Funkce zavření okna
     def func_quit(self, root):
         root.destroy()
+    
+    def func_render_BC(self):
+        rend.render_main_frame.pack_forget()
+        self.file_opener()
+        self.render_main(data['dark_light_mode'], 0)
         
+    def func_render_unit(self):
+        rend.render_main_frame.pack_forget()
+        self.file_opener()
+        self.render_main(data['dark_light_mode'], 1)
+        
+    
     #Funkce obnovení okna díky oknu možností
-    def func_mode_reload(self, root, val):
+    def func_mode_reload(self, root, val, option):
         self.func_quit(root) #Zavření okna možnosti
         rend.render_main_frame.pack_forget() #"Zapomenutí" hlavního rámu
         self.func_settings_change(val)
-        self.render_main(val) #Znovu vytvoření hlavního rámu
+        self.render_main(val, option) #Znovu vytvoření hlavního rámu
         
     #Funkce pro uložení změny vzhledu
     def func_settings_change(self, val):
@@ -62,14 +78,14 @@ class Func(OpenFile, calc.BasicCalculator):
         print("\ndakr/light mode has been set to: "+str(val)) #Vypsání změny vzhledu do konzole pro debug   
         
     #Funkce na změnu jazyka    
-    def func_laguage_change(self, root, value):
+    def func_laguage_change(self, root, value, option):
         print("\nlocalisation file set to: "+value) #Vypsní změny jazky do koncole pro debug
         self.new_locale = value #Přiřazení nové hodnoty
         self.func_locale_save() #Zavolání funkce pro uložení změny jazyka
         self.func_quit(root) #Zavření okna
         rend.render_main_frame.pack_forget() #Resetování hlavního rámu
         self.file_opener() #Znovu načtení dat se změnou
-        self.render_main(data['dark_light_mode']) #Znovu vykreslení rámu
+        self.render_main(data['dark_light_mode'], option) #Znovu vykreslení rámu
         
     #Funkce pro vyčištění kalkulátoru
     def func_calc_clear(self, mode):
@@ -260,3 +276,38 @@ class Func(OpenFile, calc.BasicCalculator):
         rend.render_bc_button_1_0.config(text="x^n ", padx=2, command= lambda: self.func_calc_input('oper', 'NSQ'))
         rend.render_bc_button_2_0.config(text="³√", padx=8, command= lambda: self.func_calc_input('oper', 'NROOT'))
         rend.render_bc_button_3_0.config(text="↓", command=lambda: self.func_calc_shift_down())
+        
+    def func_unit_mode_change(self, val):  
+        if val == "time":
+            rend.ucl_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][5])
+            rend.ucr_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][5])
+        else:
+            rend.ucl_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][1])
+            rend.ucr_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][1])
+        
+        rend.render_uc_l_entry.delete(0, 'end')
+        
+        rend.render_uc_r_entry.delete(0, 'end') 
+        rend.render_uc_r_entry.config(state='disabled')
+        
+        rend.render_uc_l_menu.grid_forget()
+        rend.render_uc_l_menu = OptionMenu(rend.render_uc_frame, rend.ucl_var, *unit_conv[val])
+        rend.render_uc_l_menu.configure(width=7, bg=rend.upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=rend.main_text_color, activebackground=rend.upper_bar_frame_submenu_color_hover, activeforeground=rend.main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2')
+        
+        rend.render_uc_r_menu.grid_forget()
+        rend.render_uc_r_menu = OptionMenu(rend.render_uc_frame, rend.ucr_var, *unit_conv[val])
+        rend.render_uc_r_menu.configure(width=7, bg=rend.upper_bar_frame_submenu_color, borderwidth=1, relief='sunken', fg=rend.main_text_color, activebackground=rend.upper_bar_frame_submenu_color_hover, activeforeground=rend.main_text_color, highlightthickness=0, pady=5, state='normal', cursor='hand2')
+        
+        rend.render_uc_l_menu.grid(row=4, column=1, sticky='we', padx=5, pady=5)
+        rend.render_uc_r_menu.grid(row=4, column=4, sticky='we', padx=5, pady=5) 
+        return
+    
+    def func_unit_conver(self, l_val, r_val, val, val_list, conv_val):
+        print(l_val, r_val, val, val_list, conv_val)
+        rend.render_uc_r_entry.delete(0, 'end') 
+        
+        y = self.UC_convert(l_val, r_val, val, val_list, conv_val)
+        
+        rend.render_uc_r_entry.config(state='normal')
+        rend.render_uc_r_entry.insert(0, y)
+        return
