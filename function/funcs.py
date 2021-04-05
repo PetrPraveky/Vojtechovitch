@@ -7,6 +7,9 @@ import render as rend
 import unitconver as units
 from render import *
 
+BC_num_memory = [[''], [''], [''], [''], ['']]
+BC_equal_memory = [[''], [''], [''], [''], ['']]
+
 def func_connected():
     print("     funcs.py")
 
@@ -101,22 +104,30 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 pass
     def func_calc_input(self, mode, var):        
         if mode == "num": #Testuje, zda-li je zadané číslo
-            if int(var) in data['number_list']: #Testuje, zda-li je číslo platné
-                current = rend.render_bc_input_box.get() #Záskání dat z řádku
-                if current == "0" and int(var) == 0: #Pokud-li jediné, co řádek obsahuje je 0, nenapíše další nulu
-                    pass
-                else: #Ostatní možnosti
-                    try: #Testování errorů
-                        if current == "0": #Pokud-li jediné, co řádek obsahuje je 0, číslo nulu přepíše
-                            rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                            rend.render_bc_input_box.insert(0, str(var)) #Vypsání nového řádku
-                        else: #Ostatní možnosti
-                            rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                            rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
-                    except: #Pokud-li přijde error, přeskočí příkaz
+            try:
+                if int(var) in data['number_list']: #Testuje, zda-li je číslo platné
+                    current = rend.render_bc_input_box.get() #Záskání dat z řádku
+                    if current == "0" and int(var) == 0: #Pokud-li jediné, co řádek obsahuje je 0, nenapíše další nulu
                         pass
-            else: #Pokud číslo není validní, přeskočí příkaz
-                pass
+                    else: #Ostatní možnosti
+                        try: #Testování errorů
+                            if current == "0": #Pokud-li jediné, co řádek obsahuje je 0, číslo nulu přepíše
+                                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                rend.render_bc_input_box.insert(0, str(var)) #Vypsání nového řádku
+                            else: #Ostatní možnosti
+                                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
+                        except: #Pokud-li přijde error, přeskočí příkaz
+                            pass
+            except:
+                if var == "e":
+                    current = rend.render_bc_input_box.get()
+                    try:
+                        int(current[-1])
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
+                    except:
+                        pass
         if mode == "oper": #Testuje, zda-li je zadaná operace
             if str(var) in data['operators_list']: #Testuje, zda-li je operace platná
                 if str(var) == "ADD": #Pokud je operace sčítání
@@ -134,7 +145,10 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     elif current == "" and str(var) == 'SUB': #Pokud-li je řádek prázdný a operace je odčítání, vypíše "0-"
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                         rend.render_bc_input_box.insert(0, "0"+'-') #Vypsání nového řádku
-                    elif current != "": #Pokud-li řádek není prázdný
+                    elif current[-1] == "e" and str(var) == "SUB":
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+'-')                        
+                    elif current != "" and current[-1] != "e": #Pokud-li řádek není prázdný
                         if current[-1] == ".": #Pokud-li je poslední znak desetinná čárka, přeskočí
                             pass
                         else:
@@ -146,7 +160,9 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                     pass
                                 else:
                                     if str(current[-1]) in data["operators_chars"]: #Testuje, jestli je poslední znak mezi znakama operací
-                                        if current[-2] == "(": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
+                                        if current[-3] == "(": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
+                                            pass
+                                        elif current[-2] == "e":
                                             pass
                                         else:
                                             current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový

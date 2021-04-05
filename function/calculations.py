@@ -27,59 +27,78 @@ class BasicCalculator():
         else:
             if number[-1] in data['operators_chars']:
                 number = number[:-1]
+            if number[-1] == "e":
+                number = number[:-1]
+            if number[-1] == "(":
+                number = number[:-1]
             n = 0
-            for n in range(len(number)):
-                try:
-                    int(number[n])
-                    number_var += number[n]
-                    n += 1
-                    if n == len(number):
-                        break
-                except:
-                    if number[n] == ".":
+            if number == "":
+                return ""
+            else:
+                for n in range(len(number)):
+                    try:
+                        int(number[n])
                         number_var += number[n]
                         n += 1
-                    elif number[n] in data['operators_chars'] or number[n] in data['add_operators_char']:
-                        number_list.append(number_var)
-                        number_list.append(number[n])
-                        number_var = ""
-                        n += 1
+                        if n == len(number):
+                            break
+                    except:
+                        if number[n] == "." or number[n] == "e":
+                            number_var += number[n]
+                            n += 1
+                        elif number[n] in data['operators_chars'] or number[n] in data['add_operators_char']:
+                            if number[n-1] == "e":
+                                if number[n] == "-" or number[n] == "+":
+                                    number_var += number[n]
+                                else:
+                                    number_list.append(number_var)
+                                    number_list.append(number[n])
+                                    number_var = ""
+                                    n += 1
+                            else:
+                                number_list.append(number_var)
+                                number_list.append(number[n])
+                                number_var = ""
+                                n += 1
+                        else:
+                            n += 1
+                            pass
+                number_list.append(number_var)
+                m, lbr, rbr, br_var = 0, 0, 0, 0
+                for m in range(len(number)):
+                    if number[m] == "(":
+                        lbr += 1
+                        m += 1
+                    elif number[m] == ")":
+                        rbr += 1
+                        m += 1
                     else:
+                        m += 1  
+                p = 0
+                if lbr > rbr:
+                    br_var = lbr-rbr
+                    n = 0
+                    for n in range(br_var):
+                        number_list.append(')')
                         n += 1
-                        pass
-            number_list.append(number_var)
-            m, lbr, rbr, br_var = 0, 0, 0, 0
-            for m in range(len(number)):
-                if number[m] == "(":
-                    lbr += 1
-                    m += 1
-                elif number[m] == ")":
-                    rbr += 1
-                    m += 1
-                else:
-                    m += 1  
-            p = 0
-            if lbr > rbr:
-                br_var = lbr-rbr
-                n = 0
-                for n in range(br_var):
-                    number_list.append(')')
-                    n += 1
-            for m in cycle(range(0, 1)):
-                if "" in number_list:
-                    number_list.remove("")
+                for m in cycle(range(0, 1)):
                     if "" in number_list:
-                        continue
+                        number_list.remove("")
+                        if "" in number_list:
+                            continue
+                        else:
+                            break
                     else:
                         break
-                else:
-                    break
-            
-            x = self.BC_start(number_list)
-            
-            time_end = time.time()
-            print(f'Operation complete in: {time_end-time_start}')
-            return x
+                
+                x = self.BC_start(number_list)
+                
+                time_end = time.time()
+                print(f'Operation complete in: {time_end-time_start}')
+                try:
+                    return float(x)
+                except:
+                    return x
     
     def BC_start(self, number_list):
         if '(' in number_list:
