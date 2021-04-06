@@ -236,11 +236,11 @@ class Render(funcs.Func):
         render_bc_memory_slot_5 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[4])+"  =  "+str(funcs.BC_equal_memory[4])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
                                         activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
         #Vytvoření 5ti tlačítek "více"
-        render_bc_memory_slot_more_1 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
-        render_bc_memory_slot_more_2 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
-        render_bc_memory_slot_more_3 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
-        render_bc_memory_slot_more_4 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
-        render_bc_memory_slot_more_5 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        render_bc_memory_slot_more_1 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.render_BC_memory_more(0))
+        render_bc_memory_slot_more_2 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.render_BC_memory_more(1))
+        render_bc_memory_slot_more_3 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.render_BC_memory_more(2))
+        render_bc_memory_slot_more_4 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.render_BC_memory_more(3))
+        render_bc_memory_slot_more_5 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.render_BC_memory_more(4))
         #Vytvoření 5ti tlačítek vymazání
         render_bc_memory_slot_del_1 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(0))
         render_bc_memory_slot_del_2 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(1))
@@ -287,6 +287,25 @@ class Render(funcs.Func):
         render_bc_memory_slot_load_5.grid(row=5, column=4, padx=5, pady=5)
         #Vyrenderování rámu paměti kalkulačky
         render_bc_memory_frame.grid(row=2, column=0, sticky='w', padx=50)
+    
+    def render_BC_memory_more(self, index):
+        render_BC_memory_more_window = Toplevel()
+        render_BC_memory_more_window.title(locale['BC_memory_more_window'])
+        render_BC_memory_more_window.geometry(str(data['BC_memory_resolution']))
+        render_BC_memory_more_window.resizable(0, 0)
+        render_BC_memory_more_window.config(bg=mode_window_background_color, relief='flat')
+        
+        render_BC_memory_more_exit = Button(render_BC_memory_more_window, bg=mode_window_background_color, text='--  '+locale['BC_memory_more_exit']+'  --', fg=main_text_color, padx=20, command=lambda: render_BC_memory_more_window.destroy())
+        
+        render_BC_memory_more_frame = Frame(render_BC_memory_more_window, bg=calc_background_color_1, relief='sunken', borderwidth=2)
+        
+        render_BC_label = Label(render_BC_memory_more_frame, text=funcs.BC_num_memory[index], bg=mode_window_background_color, fg=main_text_color)
+        render_BC_equal_label = Label(render_BC_memory_more_frame, text="=  "+str(funcs.BC_equal_memory[index]), bg=mode_window_background_color, fg=main_text_color)
+        
+        render_BC_memory_more_frame.pack(fill='both', expand="True", padx=20, pady=10)
+        render_BC_label.pack(padx=5, pady=5)
+        render_BC_equal_label.pack(padx=5, pady=5)
+        render_BC_memory_more_exit.pack(padx=20, pady=10)
     
     #Funkce pro vykreslení převodů jednotek
     def render_unit_conver(self):
@@ -368,7 +387,7 @@ class Render(funcs.Func):
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_end'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_quit(self.main_root))
         #Přidání položek do podlistu pro 2. tlačítko
         render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=self.render_dark_light_mode_window)
-        render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled', command=self.render_locale_type_window)
+        render_upper_settings_submenu.add_command(label="×  "+locale['UB_SSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=self.render_locale_type_window)
         #Zpárování podlistů k tlačítkům
         render_upper_settings_btn.config(menu= render_upper_settings_submenu)
         render_upper_list_btn.config(menu= render_upper_list_submenu)

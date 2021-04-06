@@ -1,6 +1,7 @@
 import json
 import os
 from tkinter import OptionMenu
+from itertools import cycle
 
 import calculations as calc
 import render as rend
@@ -282,6 +283,11 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
             x = self.BC_number_sort(current)
             BC_num_memory.insert(0, current)
             BC_equal_memory.insert(0, x)
+            try:
+                BC_num_memory.pop(10)
+                BC_equal_memory.pop(10)
+            except:
+                pass
             self.func_calc_memory_reload()
             rend.render_bc_input_box.delete(0, 'end')             
             rend.render_bc_input_box.insert(0, str(x))            
@@ -300,7 +306,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         
     def func_calc_memory_load(self, index):
         rend.render_bc_input_box.delete(0, 'end')             
-        rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))          
+        rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
 
     def func_calc_shift_down(self):
         rend.render_bc_button_1_0.config(text="x²", padx=9, command= lambda: self.func_calc_input('oper', 'SQ'))
@@ -311,7 +317,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         rend.render_bc_button_1_0.config(text="x^n ", padx=2, command= lambda: self.func_calc_input('oper', 'NSQ'))
         rend.render_bc_button_2_0.config(text="³√", padx=8, command= lambda: self.func_calc_input('oper', 'NROOT'))
         rend.render_bc_button_3_0.config(text="↓", command=lambda: self.func_calc_shift_down())
-        
+    
     def func_unit_mode_change(self, val):  
         if val == "time":
             rend.ucl_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][5])

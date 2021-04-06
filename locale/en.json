@@ -1,27 +1,41 @@
 {
     "UB_LB_text": "System menu",
 
-    "UB_LSM_option_1": "Basic calculator",
-    "UB_LSM_option_2": "Unit tranfer",
-    "UB_LSM_option_3": "Physics calculator",
-    "UB_LSM_option_4": "Render funcion graphs",                
-    "UB_LSM_option_5": "Complex claculator",
-    "UB_LSM_option_6": "End",        
+    "UB_LSM_option_title_1": "Matematika",
+    "UB_LSM_option_1": "Základní kalkulačka",
+    "UB_LSM_option_2": "Vykreslení grafu funkcí",
+    "UB_LSM_option_title_2": "Fyzika",
+    "UB_LSM_option_3": "Převody jednotek",
+    "UB_LSM_option_4": "Fyzikální kalkulačka",
+    "UB_LSM_option_end": "Ukončit",
 
-    "UB_SB_text": "Settings",
+    "UB_SB_text": "Nastavení",
 
-    "UB_SSM_option_1": "Appearance change",
-    "UB_SSM_option_2": "Localization change",
+    "UB_SSM_option_1": "Změna vzhledu",
+    "UB_SSM_option_2": "Změna lokalizace",
 
-    "DL_MW_title": "Appearance change",
-    "DL_MC_title": "Appearance change options",
-    "DL_MAC_button": "Accpet",
-    "DL_MCA_button": "Cancel",
+    "DL_MW_title": "Změna vzhledu",
+    "DL_MC_title": "Možnosti změny vzhledu",
+    "DL_MAC_button": "Přijmout",
+    "DL_MCA_button": "Zrušit",
 
-    "LT_title": "Localization change",
-    "L_title": "Localization options",
+    "LT_title": "Změna lokalizace",
+    "L_title": "Možnosti lokalizace",
 
-    "BC_title": "Mód základní kalkulačky",
+    
+    "BC_title": "Základní kalkulačky",
+    "BC_memory_title": "Mezipaměť",
+    "BC_memory_load": "Načíst",
+
+    "UC_title": "Převody jednotek",
+    "UC_e_title": "Nastavení módu",
+
+
+    "unit_data": [
+        "Vzdálenost",
+        "Hmotnost",
+        "Čas"
+    ],
 
     "dark_mode": "Dark mode",
     "light_mode": "Light mode",

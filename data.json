@@ -7,6 +7,7 @@
     "main_root_resolution": "1280x720",
     "light_dark_mode_resolution": "276x164",
     "locale_type_resolution": "276x144",
+    "BC_memory_resolution": "576x144",
     "dark_light_mode": 1,
     "operators_list": [
         "ADD",
