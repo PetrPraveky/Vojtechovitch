@@ -7,8 +7,8 @@ import render as rend
 import unitconver as units
 from render import *
 
-BC_num_memory = [[''], [''], [''], [''], ['']]
-BC_equal_memory = [[''], [''], [''], [''], ['']]
+BC_num_memory = ["", "", "", "", ""]
+BC_equal_memory = ["", "", "", "", ""]
 
 def func_connected():
     print("     funcs.py")
@@ -280,8 +280,27 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         elif mode == "equal":
             current = rend.render_bc_input_box.get()
             x = self.BC_number_sort(current)
+            BC_num_memory.insert(0, current)
+            BC_equal_memory.insert(0, x)
+            self.func_calc_memory_reload()
             rend.render_bc_input_box.delete(0, 'end')             
             rend.render_bc_input_box.insert(0, str(x))            
+
+    def func_calc_memory_reload(self):
+        rend.render_bc_memory_frame.grid_forget()
+        self.render_BC_memory()
+        
+    def func_calc_memory_delete(self, index):
+        BC_num_memory.pop(index)
+        BC_equal_memory.pop(index)
+        if len(BC_num_memory) == 4:
+            BC_num_memory.append('')
+            BC_equal_memory.append('')
+        self.func_calc_memory_reload()
+        
+    def func_calc_memory_load(self, index):
+        rend.render_bc_input_box.delete(0, 'end')             
+        rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))          
 
     def func_calc_shift_down(self):
         rend.render_bc_button_1_0.config(text="x²", padx=9, command= lambda: self.func_calc_input('oper', 'SQ'))

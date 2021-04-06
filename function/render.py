@@ -225,19 +225,36 @@ class Render(funcs.Func):
         render_bc_memor_slot_num_4 = Label(render_bc_memory_frame, text='4)', fg=main_text_color, bg=calc_background_color_1)
         render_bc_memor_slot_num_5 = Label(render_bc_memory_frame, text='5)', fg=main_text_color, bg=calc_background_color_1)
         #Vytvoření 5ti míst v paměti
-        render_bc_memory_slot_1 = Button(render_bc_memory_frame, text=(str(funcs.BC_num_memory[0][0])+"  =  "+str(funcs.BC_equal_memory[0][0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, width=38, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, padx=3)
-        render_bc_memory_slot_2 = Button(render_bc_memory_frame, text=(str(funcs.BC_num_memory[1][0])+"  =  "+str(funcs.BC_equal_memory[1][0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, width=38, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, padx=3)
-        render_bc_memory_slot_3 = Button(render_bc_memory_frame, text=(str(funcs.BC_num_memory[2][0])+"  =  "+str(funcs.BC_equal_memory[2][0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, width=38, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, padx=3)
-        render_bc_memory_slot_4 = Button(render_bc_memory_frame, text=(str(funcs.BC_num_memory[3][0])+"  =  "+str(funcs.BC_equal_memory[3][0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, width=38, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, padx=3)
-        render_bc_memory_slot_5 = Button(render_bc_memory_frame, text=(str(funcs.BC_num_memory[4][0])+"  =  "+str(funcs.BC_equal_memory[4][0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, width=38, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, padx=3)
+        render_bc_memory_slot_1 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[0])+"  =  "+str(funcs.BC_equal_memory[0])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
+                                        activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
+        render_bc_memory_slot_2 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[1])+"  =  "+str(funcs.BC_equal_memory[1])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
+                                        activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
+        render_bc_memory_slot_3 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[2])+"  =  "+str(funcs.BC_equal_memory[2])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
+                                        activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
+        render_bc_memory_slot_4 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[3])+"  =  "+str(funcs.BC_equal_memory[3])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
+                                        activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
+        render_bc_memory_slot_5 = Label(render_bc_memory_frame, text=(str(funcs.BC_num_memory[4])+"  =  "+str(funcs.BC_equal_memory[4])), fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, 
+                                        activeforeground=main_text_color, width=28, relief='flat', borderwidth=0, anchor='e', state='disabled', disabledforeground=main_text_color, pady=5, padx=3)
+        #Vytvoření 5ti tlačítek "více"
+        render_bc_memory_slot_more_1 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        render_bc_memory_slot_more_2 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        render_bc_memory_slot_more_3 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        render_bc_memory_slot_more_4 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        render_bc_memory_slot_more_5 = Button(render_bc_memory_frame, text="...", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5)
+        #Vytvoření 5ti tlačítek vymazání
+        render_bc_memory_slot_del_1 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(0))
+        render_bc_memory_slot_del_2 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(1))
+        render_bc_memory_slot_del_3 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(2))
+        render_bc_memory_slot_del_4 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(3))
+        render_bc_memory_slot_del_5 = Button(render_bc_memory_frame, text="X", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, padx=5, command=lambda: self.func_calc_memory_delete(4))
         #Vytvoření 5ti tlačítek načtení
-        render_bc_memory_slot_load_1 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color)
-        render_bc_memory_slot_load_2 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color)
-        render_bc_memory_slot_load_3 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color)
-        render_bc_memory_slot_load_4 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color)
-        render_bc_memory_slot_load_5 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color)
+        render_bc_memory_slot_load_1 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, command=lambda: self.func_calc_memory_load(0))
+        render_bc_memory_slot_load_2 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, command=lambda: self.func_calc_memory_load(1))
+        render_bc_memory_slot_load_3 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, command=lambda: self.func_calc_memory_load(2))
+        render_bc_memory_slot_load_4 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, command=lambda: self.func_calc_memory_load(3))
+        render_bc_memory_slot_load_5 = Button(render_bc_memory_frame, text=locale['BC_memory_load']+" →", cursor='hand2', fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, command=lambda: self.func_calc_memory_load(4))
         #Vyrenderování jednotlivých částí
-        render_bc_memory_title.grid(row=0, column=0, columnspan=3, sticky='we', padx=5, pady=5)
+        render_bc_memory_title.grid(row=0, column=0, columnspan=5, sticky='we', padx=5, pady=5)
         #Render 5ti číslic k mezipaměti
         render_bc_memor_slot_num_1.grid(row=1, column=0, padx=5, pady=5) 
         render_bc_memor_slot_num_2.grid(row=2, column=0, padx=5, pady=5) 
@@ -250,12 +267,24 @@ class Render(funcs.Func):
         render_bc_memory_slot_3.grid(row=3, column=1, padx=5, pady=5)
         render_bc_memory_slot_4.grid(row=4, column=1, padx=5, pady=5)
         render_bc_memory_slot_5.grid(row=5, column=1, padx=5, pady=5)
+        #Render 5ti tlačítek "vice"
+        render_bc_memory_slot_more_1.grid(row=1, column=2, padx=5, pady=5)
+        render_bc_memory_slot_more_2.grid(row=2, column=2, padx=5, pady=5)
+        render_bc_memory_slot_more_3.grid(row=3, column=2, padx=5, pady=5)
+        render_bc_memory_slot_more_4.grid(row=4, column=2, padx=5, pady=5)
+        render_bc_memory_slot_more_5.grid(row=5, column=2, padx=5, pady=5)
+        #Render 5ti tlačítek vymazání
+        render_bc_memory_slot_del_1.grid(row=1, column=3, padx=5, pady=5)
+        render_bc_memory_slot_del_2.grid(row=2, column=3, padx=5, pady=5)
+        render_bc_memory_slot_del_3.grid(row=3, column=3, padx=5, pady=5)
+        render_bc_memory_slot_del_4.grid(row=4, column=3, padx=5, pady=5)
+        render_bc_memory_slot_del_5.grid(row=5, column=3, padx=5, pady=5)
         #Render 5ti tlačítek načtení
-        render_bc_memory_slot_load_1.grid(row=1, column=2, padx=5, pady=5)
-        render_bc_memory_slot_load_2.grid(row=2, column=2, padx=5, pady=5)
-        render_bc_memory_slot_load_3.grid(row=3, column=2, padx=5, pady=5)
-        render_bc_memory_slot_load_4.grid(row=4, column=2, padx=5, pady=5)
-        render_bc_memory_slot_load_5.grid(row=5, column=2, padx=5, pady=5)
+        render_bc_memory_slot_load_1.grid(row=1, column=4, padx=5, pady=5)
+        render_bc_memory_slot_load_2.grid(row=2, column=4, padx=5, pady=5)
+        render_bc_memory_slot_load_3.grid(row=3, column=4, padx=5, pady=5)
+        render_bc_memory_slot_load_4.grid(row=4, column=4, padx=5, pady=5)
+        render_bc_memory_slot_load_5.grid(row=5, column=4, padx=5, pady=5)
         #Vyrenderování rámu paměti kalkulačky
         render_bc_memory_frame.grid(row=2, column=0, sticky='w', padx=50)
     
