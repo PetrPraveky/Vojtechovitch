@@ -98,9 +98,25 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         else: #Vyčištění poslední hodnoty/znaku
             current = rend.render_bc_input_box.get() #Získání dat z řádku
             if current != "": #Testuje, zda-li je řádek prázdný
-                current = current[:-1] #Vymaže poslední znak
-                rend.render_bc_input_box.delete(0, 'end') #Vymazní řádku
-                rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
+                if str(current[-1]) in data['char_list']:
+                    m = -1
+                    for n in cycle(range(0, 1)):
+                        try:
+                            if str(current[m]) in data['char_list']:
+                                print(m)
+                                m -= 1
+                                continue
+                            else:
+                                break
+                        except:
+                            break
+                    current = current[:(m+1)]
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazní řádku
+                    rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
+                else:
+                    current = current[:-1] #Vymaže poslední znak
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazní řádku
+                    rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
             else: #Jinak přeskočit příkaz
                 pass
     def func_calc_input(self, mode, var):        
@@ -160,18 +176,36 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 if str(current[-1]) == "(" and var != 'SUB': #Pokud je poseldní znak optevřená závorka a operace není odčítání, přeskočí příkaz
                                     pass
                                 else:
-                                    if str(current[-1]) in data["operators_chars"]: #Testuje, jestli je poslední znak mezi znakama operací
-                                        if current[-3] == "(": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
-                                            pass
-                                        elif current[-2] == "e":
-                                            pass
-                                        else:
+                                    if str(current[-1]) in data["operators_chars"] and str(current[-1]) != '!': #Testuje, jestli je poslední znak mezi znakama operací
+                                        try:
+                                            if current[-2] == "e": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
+                                                pass
+                                            elif current[-3] == "f":
+                                                pass
+                                            else:
+                                                current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový
+                                                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                                rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
+                                        except:
                                             current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový
                                             rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                                            rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
+                                            rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku 
                                     else:
                                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
                                         rend.render_bc_input_box.insert(0, str(current)+str(oper_val)) #Vypsání nového řádku
+                elif str(var) in data['operators_list'][8]:
+                    current = rend.render_bc_input_box.get()
+                    try:
+                        print(str(current[-1]))
+                        if str(current[-1]) in str(data['number_list']):
+                            rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
+                            print('s')
+                            rend.render_bc_input_box.insert(0, str(current)+"!")
+                        else:
+                            pass
+                    except ValueError as err:
+                        print(err)
+                        pass
                 elif str(var) in data['operators_list'][3:] and str(var) not in data['operators_list'][8:]: #Testuje, zda-li jsou operace mezi pokročilými
                     current = rend.render_bc_input_box.get() #Zíkání dat z řádku
                     if current == "": #Pokud je řádek prázdný, příkaz se přeskočí
@@ -268,6 +302,27 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                         pass
             else:
                 pass
+        elif mode == "geom":
+            if str(var) == 'SIN':
+                geo_val = 'sin('
+            elif str(var) == 'COS':
+                geo_val = 'cos('
+            elif str(var) == 'TG':
+                geo_val = 'tg('
+            current = rend.render_bc_input_box.get()
+            try:
+                if current[-1] in data['operators_chars'] and current[-1] != '!':
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, str(current)+str(geo_val))
+                else:
+                    if str(current[-1]) == '(':
+                        rend.render_bc_input_box.delete(0, 'end')             
+                        rend.render_bc_input_box.insert(0, str(current)+str(geo_val))
+                    else:
+                        pass
+            except:
+                rend.render_bc_input_box.delete(0, 'end')             
+                rend.render_bc_input_box.insert(0, str(current)+str(geo_val))                
         elif mode == "dec":
             current = rend.render_bc_input_box.get()
             try:
@@ -280,17 +335,21 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 pass
         elif mode == "equal":
             current = rend.render_bc_input_box.get()
-            x = self.BC_number_sort(current)
-            BC_num_memory.insert(0, current)
-            BC_equal_memory.insert(0, x)
-            try:
-                BC_num_memory.pop(10)
-                BC_equal_memory.pop(10)
-            except:
-                pass
-            self.func_calc_memory_reload()
-            rend.render_bc_input_box.delete(0, 'end')             
-            rend.render_bc_input_box.insert(0, str(x))            
+            if var == 'eq':
+                x = self.BC_number_sort(current)
+                if str(x) == "Err":
+                    pass
+                else:
+                    BC_num_memory.insert(0, current)
+                    BC_equal_memory.insert(0, x)
+                    try:
+                        BC_num_memory.pop(10)
+                        BC_equal_memory.pop(10)
+                    except:
+                        pass
+                self.func_calc_memory_reload()
+                rend.render_bc_input_box.delete(0, 'end')             
+                rend.render_bc_input_box.insert(0, str(x))            
 
     def func_calc_memory_reload(self):
         rend.render_bc_memory_frame.grid_forget()

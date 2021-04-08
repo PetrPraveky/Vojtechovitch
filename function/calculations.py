@@ -15,6 +15,7 @@ class OpenFile():
         data = json.load(g) #Načtení dat
         g.close() #Zavření původního souboru
     
+geo_list = ['sin', 'cos', 'tg']
 
 class BasicCalculator():
     def BC_number_sort(self, number):
@@ -25,7 +26,7 @@ class BasicCalculator():
         if number == "":
             return "0"
         else:
-            if number[-1] in data['operators_chars']:
+            if number[-1] in data['operators_chars'] and number[-1] != '!':
                 number = number[:-1]
             if number[-1] == "e":
                 number = number[:-1]
@@ -60,6 +61,8 @@ class BasicCalculator():
                                 number_list.append(number[n])
                                 number_var = ""
                                 n += 1
+                        elif str(number[n]) in data['char_list']:
+                            number_var += number[n]
                         else:
                             n += 1
                             pass
@@ -90,6 +93,7 @@ class BasicCalculator():
                             break
                     else:
                         break
+                print(number_list)
                 
                 x = self.BC_start(number_list)
                 
@@ -182,9 +186,27 @@ class BasicCalculator():
     def BC_calculation(self, number_list):
         for n in cycle(range(0,1)):
             try:
+                if '!' in number_list:
+                    number_list = self.BC_factorial(number_list)
                 #Mocnina
-                if '^' in number_list:
+                elif '^' in number_list:
                     number_list = self.BC_exponent(number_list)
+                #Goniometrické funkce:
+                elif "sin" in number_list or "cos" in number_list or "tg" in number_list:
+                    if "sin" in number_list:
+                        number_list = self.BC_geo_sin(number_list)
+                        continue
+                    elif "cos" in number_list:
+                        number_list = self.BC_geo_cos(number_list)
+                        continue
+                    elif "tg" in number_list:
+                        number_list = self.BC_geo_tg(number_list)
+                        print(number_list)
+                        if number_list == "Err":
+                            print(number_list)
+                            return str(number_list)
+                        else:
+                            continue
                 #Dělení x násobení
                 elif "/" in number_list or "*" in number_list:
                     try:
@@ -215,6 +237,7 @@ class BasicCalculator():
                         continue  
                     else:
                         pass
+
                 if len(number_list) == 1:
                     break
                 else:
@@ -225,12 +248,57 @@ class BasicCalculator():
             
         return number_list
             
+    def BC_factorial(self, number_list):
+        equal = []
+        x = number_list.index("!")
+        
+        equal.append(str(math.factorial(float(number_list[x-1]))))
+        y = number_list[:(x-1)]+equal+number_list[(x+1):]
+        
+        return y
+            
     def BC_exponent(self, number_list):
         equal = []
         x = number_list.index("^")
         
         equal.append(str(math.pow(float(number_list[x-1]), float(number_list[x+1]))))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
+        
+        return y
+    
+    def BC_geo_sin(self, number_list):
+        equal = []
+        x = number_list.index("sin")
+        
+        equal.append(str(math.sin(float(number_list[x+1])*float(math.pi/180))))
+        
+        y = number_list[:(x)] + equal + number_list[(x+2):]
+        
+        return y
+    
+    def BC_geo_cos(self, number_list):
+        equal = []
+        x = number_list.index("cos")
+        
+        equal.append(str(math.cos(float(number_list[x+1])*float(math.pi/180))))
+        
+        y = number_list[:(x)] + equal + number_list[(x+2):]
+        
+        return y
+    
+    def BC_geo_tg(self, number_list):
+        equal = []
+        x = number_list.index("tg")
+        
+        try:
+            if int(number_list[x+1]) == 90:
+                return ['Err']
+            else:
+                equal.append(str(math.tan(float(number_list[x+1])*float(math.pi/180))))                
+        except:
+            equal.append(str(math.tan(float(number_list[x+1])*float(math.pi/180))))
+        
+        y = number_list[:(x)] + equal + number_list[(x+2):]
         
         return y
     

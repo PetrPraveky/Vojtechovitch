@@ -17,14 +17,16 @@
         "SQ",
         "SQROOT",
         "NSQ",
-        "NROOT"
+        "NROOT",
+        "FAC"
     ],
     "operators_chars": [
         "+",
         "-",
         "*",
         "/",
-        "^"
+        "^",
+        "!"
     ],
     "add_operators_list": [
         "LBRACKET",
@@ -45,5 +47,19 @@
         8,
         9,
         0
+    ],
+    "geometr_opers": [
+        "SIN",
+        "COS",
+        "TG"
+    ],
+    "char_list": [
+        "c",
+        "g",
+        "i",
+        "n",
+        "o",
+        "s",
+        "t"
     ]
 }
