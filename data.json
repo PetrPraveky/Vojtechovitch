@@ -51,9 +51,13 @@
     "geometr_opers": [
         "SIN",
         "COS",
-        "TG"
+        "TG",
+        "ASIN",
+        "ACOS",
+        "ATG"
     ],
     "char_list": [
+        "a",
         "c",
         "g",
         "i",

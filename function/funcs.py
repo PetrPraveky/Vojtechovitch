@@ -1,7 +1,9 @@
 import json
 import os
+from os.path import commonpath
 from tkinter import OptionMenu
 from itertools import cycle
+from tkinter.constants import E
 
 import calculations as calc
 import render as rend
@@ -103,7 +105,6 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     for n in cycle(range(0, 1)):
                         try:
                             if str(current[m]) in data['char_list']:
-                                print(m)
                                 m -= 1
                                 continue
                             else:
@@ -132,12 +133,19 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                 rend.render_bc_input_box.insert(0, str(var)) #Vypsání nového řádku
                             else: #Ostatní možnosti
-                                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                                rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
+                                try:
+                                    if current[-1] == 'π' or current[-1] == 'e':
+                                        pass
+                                    else:
+                                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                        rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
+                                except:
+                                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                    rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
                         except: #Pokud-li přijde error, přeskočí příkaz
                             pass
             except:
-                if var == "e":
+                if var == "E":
                     current = rend.render_bc_input_box.get()
                     try:
                         int(current[-1])
@@ -145,7 +153,39 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                         rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
                     except:
                         pass
-        if mode == "oper": #Testuje, zda-li je zadaná operace
+        elif mode == "snum":
+            current = rend.render_bc_input_box.get()
+            if str(var) == 'pi':
+                if current == "":   
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                    rend.render_bc_input_box.insert(0, str(current)+'π')
+                else:
+                    if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "":
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+'π')
+                    else:
+                        pass
+            elif str(var) == 'e':
+                if current == "":   
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                    rend.render_bc_input_box.insert(0, str(current)+'e')
+                else:
+                    if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "":
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+'e')
+                    else:
+                        pass
+            elif str(var) == 't':
+                if current == "":   
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                    rend.render_bc_input_box.insert(0, str(current)+'τ')
+                else:
+                    if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "":
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+'τ')
+                    else:
+                        pass
+        elif mode == "oper": #Testuje, zda-li je zadaná operace
             if str(var) in data['operators_list']: #Testuje, zda-li je operace platná
                 if str(var) == "ADD": #Pokud je operace sčítání
                     oper_val = "+" #Vypíše se +
@@ -162,10 +202,10 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     elif current == "" and str(var) == 'SUB': #Pokud-li je řádek prázdný a operace je odčítání, vypíše "0-"
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                         rend.render_bc_input_box.insert(0, "0"+'-') #Vypsání nového řádku
-                    elif current[-1] == "e" and str(var) == "SUB":
+                    elif current[-1] == "E" and str(var) == "SUB":
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                         rend.render_bc_input_box.insert(0, str(current)+'-')                        
-                    elif current != "" and current[-1] != "e": #Pokud-li řádek není prázdný
+                    elif current != "" and current[-1] != "E": #Pokud-li řádek není prázdný
                         if current[-1] == ".": #Pokud-li je poslední znak desetinná čárka, přeskočí
                             pass
                         else:
@@ -178,9 +218,9 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 else:
                                     if str(current[-1]) in data["operators_chars"] and str(current[-1]) != '!': #Testuje, jestli je poslední znak mezi znakama operací
                                         try:
-                                            if current[-2] == "e": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
+                                            if current[-2] == "E": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
                                                 pass
-                                            elif current[-3] == "f":
+                                            elif current[-3] == ")":
                                                 pass
                                             else:
                                                 current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový
@@ -197,7 +237,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     current = rend.render_bc_input_box.get()
                     try:
                         print(str(current[-1]))
-                        if str(current[-1]) in str(data['number_list']):
+                        if str(current[-1]) in str(data['number_list']) or str(current[-1]) == "π":
                             rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
                             print('s')
                             rend.render_bc_input_box.insert(0, str(current)+"!")
@@ -309,6 +349,12 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 geo_val = 'cos('
             elif str(var) == 'TG':
                 geo_val = 'tg('
+            elif str(var) == 'ASIN':
+                geo_val = 'asin('
+            elif str(var) == 'ACOS':
+                geo_val = 'acos('
+            elif str(var) == 'ATG':
+                geo_val = 'atg('            
             current = rend.render_bc_input_box.get()
             try:
                 if current[-1] in data['operators_chars'] and current[-1] != '!':
@@ -337,7 +383,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
             current = rend.render_bc_input_box.get()
             if var == 'eq':
                 x = self.BC_number_sort(current)
-                if str(x) == "Err":
+                if str(x) == "∞":
                     pass
                 else:
                     BC_num_memory.insert(0, current)
@@ -364,18 +410,52 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         self.func_calc_memory_reload()
         
     def func_calc_memory_load(self, index):
-        rend.render_bc_input_box.delete(0, 'end')             
-        rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
+        current = rend.render_bc_input_box.get()
+        try:
+            if int(current[-1]) not in data['number_list']:
+                if str(current[-1]) != "π" or str(current[-1]) != "e":
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, current+str(BC_equal_memory[index]))
+                else:
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
+            else:
+                rend.render_bc_input_box.delete(0, 'end')             
+                rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))                          
+        except:
+            try:
+                if str(current[-1]) != "π" or str(current[-1]) != "e":
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
+                else:
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
+            except:
+                rend.render_bc_input_box.delete(0, 'end')             
+                rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))                
 
     def func_calc_shift_down(self):
         rend.render_bc_button_1_0.config(text="x²", padx=9, command= lambda: self.func_calc_input('oper', 'SQ'))
         rend.render_bc_button_2_0.config(text="√", padx=10, command= lambda: self.func_calc_input('oper', 'SQROOT'))
         rend.render_bc_button_3_0.config(text="↑", command=lambda: self.func_calc_shift_up())
         
+        rend.render_bc_button_1_5.config(padx=4, text=" sin ", command= lambda: self.func_calc_input('geom', 'SIN'))
+        rend.render_bc_button_2_5.config(padx=2, text=" cos ", command= lambda: self.func_calc_input('geom', 'COS'))
+        rend.render_bc_button_3_5.config(padx=6, text=" tg ", command= lambda: self.func_calc_input('geom', 'TG'))
+
+        rend.render_bc_button_4_7.config(padx=9, text='π', command= lambda: self.func_calc_input('snum', 'pi'))
+        
     def func_calc_shift_up(self):
         rend.render_bc_button_1_0.config(text="x^n ", padx=2, command= lambda: self.func_calc_input('oper', 'NSQ'))
         rend.render_bc_button_2_0.config(text="³√", padx=8, command= lambda: self.func_calc_input('oper', 'NROOT'))
         rend.render_bc_button_3_0.config(text="↓", command=lambda: self.func_calc_shift_down())
+
+        rend.render_bc_button_1_5.config(padx=1, text=" asin ", command= lambda: self.func_calc_input('geom', 'ASIN'))
+        rend.render_bc_button_2_5.config(padx=2, text="acos", command= lambda: self.func_calc_input('geom', 'ACOS'))
+        rend.render_bc_button_3_5.config(padx=3, text=" atg ", command= lambda: self.func_calc_input('geom', 'ATG'))
+
+        rend.render_bc_button_4_7.config(padx=10, text='τ', command= lambda: self.func_calc_input('snum', 't'))
+        
     
     def func_unit_mode_change(self, val):  
         if val == "time":
