@@ -101,7 +101,6 @@ class BasicCalculator():
                             break
                     else:
                         break
-                print(number_list)
                 
                 x = self.BC_start(number_list)
                 
@@ -318,6 +317,14 @@ class BasicCalculator():
             number_list[x+1] = math.e
         else:
             pass      
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
+        if number_list[x+1] == "t":
+            number_list[x+1] = math.tau
+        else:
+            pass      
         equal.append(str(math.pow(float(number_list[x-1]), float(number_list[x+1]))))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -334,6 +341,10 @@ class BasicCalculator():
             pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
+        else:
+            pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
         else:
             pass
         equal.append(str(math.sin(float(math.radians(number_list[x+1])))))
@@ -353,6 +364,10 @@ class BasicCalculator():
             number_list[x-1] = math.e
         else:
             pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
         equal.append(str(math.cos(float(math.radians(number_list[x+1])))))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -368,6 +383,10 @@ class BasicCalculator():
             pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
+        else:
+            pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
         else:
             pass
         try:
@@ -395,6 +414,10 @@ class BasicCalculator():
             number_list[x-1] = math.e
         else:
             pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
         equal.append(str(math.degrees(math.asin(float(number_list[x+1])))))
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -412,6 +435,10 @@ class BasicCalculator():
             number_list[x-1] = math.e
         else:
             pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
         equal.append(str(math.degrees(math.acos(float(number_list[x+1])))))
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -427,6 +454,10 @@ class BasicCalculator():
             pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
+        else:
+            pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
         else:
             pass
         equal.append(str(math.degrees(math.atan(float(number_list[x+1])))))
@@ -456,6 +487,14 @@ class BasicCalculator():
             number_list[x+1] = math.e
         else:
             pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
+        if number_list[x+1] == "t":
+            number_list[x+1] = math.tau
+        else:
+            pass
         equal.append(str(float(number_list[x-1])*float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -478,6 +517,14 @@ class BasicCalculator():
             pass
         if number_list[x+1] == "e":
             number_list[x+1] = math.e
+        else:
+            pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
+        if number_list[x+1] == "t":
+            number_list[x+1] = math.tau
         else:
             pass
         equal.append(str(float(number_list[x-1])/float(number_list[x+1])))
@@ -506,6 +553,14 @@ class BasicCalculator():
             number_list[x+1] = math.e
         else:
             pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
+        if number_list[x+1] == "t":
+            number_list[x+1] = math.tau
+        else:
+            pass
         equal.append(str(float(number_list[x-1])+float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -528,6 +583,14 @@ class BasicCalculator():
             pass
         if number_list[x+1] == "e":
             number_list[x+1] = math.e
+        else:
+            pass
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        else:
+            pass
+        if number_list[x+1] == "t":
+            number_list[x+1] = math.tau
         else:
             pass
         equal.append(str(float(number_list[x-1])-float(number_list[x+1])))

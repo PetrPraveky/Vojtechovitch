@@ -134,7 +134,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 rend.render_bc_input_box.insert(0, str(var)) #Vypsání nového řádku
                             else: #Ostatní možnosti
                                 try:
-                                    if current[-1] == 'π' or current[-1] == 'e':
+                                    if current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ':
                                         pass
                                     else:
                                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
@@ -284,6 +284,8 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     if current != "":
                         if current[-1] == ".":
                             pass
+                        elif current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ':
+                            pass 
                         else:
                             try:
                                 if int(current[-1]) in data['number_list']:
@@ -385,6 +387,8 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 x = self.BC_number_sort(current)
                 if str(x) == "∞":
                     pass
+                elif str(x) == "Math Err":
+                    pass
                 else:
                     BC_num_memory.insert(0, current)
                     BC_equal_memory.insert(0, x)
@@ -411,28 +415,21 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         
     def func_calc_memory_load(self, index):
         current = rend.render_bc_input_box.get()
-        try:
-            if int(current[-1]) not in data['number_list']:
-                if str(current[-1]) != "π" or str(current[-1]) != "e":
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, current+str(BC_equal_memory[index]))
-                else:
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
-            else:
-                rend.render_bc_input_box.delete(0, 'end')             
-                rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))                          
-        except:
+        if current != 0:
             try:
-                if str(current[-1]) != "π" or str(current[-1]) != "e":
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
-                else:
+                if int(current[-1]):
                     rend.render_bc_input_box.delete(0, 'end')             
                     rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
             except:
-                rend.render_bc_input_box.delete(0, 'end')             
-                rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))                
+                if str(current[-1]) == "π" or str(current[-1]) == "e" or str(current[-1]) == "τ" or str(current[-1]) == ")" or str(current[-1]) == ".":
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
+                else:
+                    rend.render_bc_input_box.delete(0, 'end')             
+                    rend.render_bc_input_box.insert(0, current + str(BC_equal_memory[index]))
+        else:
+            rend.render_bc_input_box.delete(0, 'end')             
+            rend.render_bc_input_box.insert(0, str(BC_equal_memory[index]))
 
     def func_calc_shift_down(self):
         rend.render_bc_button_1_0.config(text="x²", padx=9, command= lambda: self.func_calc_input('oper', 'SQ'))
