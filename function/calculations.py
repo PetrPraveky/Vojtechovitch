@@ -85,7 +85,6 @@ class BasicCalculator():
                         m += 1
                     else:
                         m += 1  
-                p = 0
                 if lbr > rbr:
                     br_var = lbr-rbr
                     n = 0
@@ -101,6 +100,8 @@ class BasicCalculator():
                             break
                     else:
                         break
+                
+                print(number_list)
                 
                 x = self.BC_start(number_list)
                 
@@ -199,6 +200,10 @@ class BasicCalculator():
     def BC_calculation(self, number_list):
         for n in cycle(range(0,1)):
             try:
+                if '[' in number_list:
+                    number_list = self.BC_abs_brackets(number_list)
+                    print(5)
+                    continue
                 if '!' in number_list:
                     number_list = self.BC_factorial(number_list)
                     if number_list == "Err":
@@ -263,7 +268,6 @@ class BasicCalculator():
                         continue  
                     else:
                         pass
-
                 if len(number_list) == 1:
                     if number_list[0] == "pi":
                         number_list.insert(0, math.pi)
@@ -279,52 +283,49 @@ class BasicCalculator():
                 else:
                     continue
             except Exception as err:
+                print(7)
+                print(number_list)
                 print(err)
                 break
-            
+        
+        print(4) 
         return number_list
             
     def BC_factorial(self, number_list):
         equal = []
         x = number_list.index("!")
         try:
-            int(number_list[x-1])
+            equal.append(str(math.factorial(float(number_list[x-1]))))
+            y = number_list[:(x-1)]+equal+number_list[(x+1):]
         except:
             return ['Math Err']
-        equal.append(str(math.factorial(float(number_list[x-1]))))
-        y = number_list[:(x-1)]+equal+number_list[(x+1):]
         
         return y
-  
-  
             
     def BC_exponent(self, number_list):
         equal = []
         x = number_list.index("^")
-        if number_list[x-1] == "pi":
-            number_list[x-1] = math.pi
-        else:
-            pass
-        if number_list[x+1] == "pi":
-            number_list[x+1] = math.pi
-        else:
-            pass
-        if number_list[x-1] == "e":
-            number_list[x-1] = math.e
-        else:
-            pass
-        if number_list[x+1] == "e":
-            number_list[x+1] = math.e
-        else:
-            pass      
-        if number_list[x-1] == "t":
-            number_list[x-1] = math.tau
-        else:
-            pass
-        if number_list[x+1] == "t":
-            number_list[x+1] = math.tau
-        else:
-            pass      
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "pi":
+                number_list[n] = math.pi
+                n += 2
+            else:
+                n += 2
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "e":
+                number_list[n] = math.e
+                n += 2
+            else:
+                n += 2    
+                n = x-1
+        for n in range(2):
+            if number_list[n] == "t":
+                number_list[n] = math.tau
+                n += 2
+            else:
+                n += 2      
         equal.append(str(math.pow(float(number_list[x-1]), float(number_list[x+1]))))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -337,16 +338,10 @@ class BasicCalculator():
         x = number_list.index("sin")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         equal.append(str(math.sin(float(math.radians(number_list[x+1])))))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -358,16 +353,10 @@ class BasicCalculator():
         x = number_list.index("cos")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         equal.append(str(math.cos(float(math.radians(number_list[x+1])))))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -379,16 +368,10 @@ class BasicCalculator():
         x = number_list.index("tg")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         try:
             if int(number_list[x+1]) == 90:
                 return ['∞']
@@ -408,16 +391,10 @@ class BasicCalculator():
         x = number_list.index("asin")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         equal.append(str(math.degrees(math.asin(float(number_list[x+1])))))
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -429,16 +406,10 @@ class BasicCalculator():
         x = number_list.index("aco")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         equal.append(str(math.degrees(math.acos(float(number_list[x+1])))))
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -450,16 +421,10 @@ class BasicCalculator():
         x = number_list.index("atg")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
-        else:
-            pass
         if number_list[x-1] == "e":
             number_list[x-1] = math.e
-        else:
-            pass
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        else:
-            pass
         equal.append(str(math.degrees(math.atan(float(number_list[x+1])))))
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
@@ -471,30 +436,27 @@ class BasicCalculator():
     def BC_mul(self, number_list):
         equal = []
         x = number_list.index("*")
-        if number_list[x-1] == "pi":
-            number_list[x-1] = math.pi
-        else:
-            pass
-        if number_list[x+1] == "pi":
-            number_list[x+1] = math.pi
-        else:
-            pass 
-        if number_list[x-1] == "e":
-            number_list[x-1] = math.e
-        else:
-            pass
-        if number_list[x+1] == "e":
-            number_list[x+1] = math.e
-        else:
-            pass
-        if number_list[x-1] == "t":
-            number_list[x-1] = math.tau
-        else:
-            pass
-        if number_list[x+1] == "t":
-            number_list[x+1] = math.tau
-        else:
-            pass
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "pi":
+                number_list[n] = math.pi
+                n += 2
+            else:
+                n += 2
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "e":
+                number_list[n] = math.e
+                n += 2
+            else:
+                n += 2    
+                n = x-1
+        for n in range(2):
+            if number_list[n] == "t":
+                number_list[n] = math.tau
+                n += 2
+            else:
+                n += 2  
         equal.append(str(float(number_list[x-1])*float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -503,30 +465,27 @@ class BasicCalculator():
     def BC_div(self, number_list):
         equal = []
         x = number_list.index("/")
-        if number_list[x-1] == "pi":
-            number_list[x-1] = math.pi
-        else:
-            pass
-        if number_list[x+1] == "pi":
-            number_list[x+1] = math.pi
-        else:
-            pass
-        if number_list[x-1] == "e":
-            number_list[x-1] = math.e
-        else:
-            pass
-        if number_list[x+1] == "e":
-            number_list[x+1] = math.e
-        else:
-            pass
-        if number_list[x-1] == "t":
-            number_list[x-1] = math.tau
-        else:
-            pass
-        if number_list[x+1] == "t":
-            number_list[x+1] = math.tau
-        else:
-            pass
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "pi":
+                number_list[n] = math.pi
+                n += 2
+            else:
+                n += 2
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "e":
+                number_list[n] = math.e
+                n += 2
+            else:
+                n += 2    
+                n = x-1
+        for n in range(2):
+            if number_list[n] == "t":
+                number_list[n] = math.tau
+                n += 2
+            else:
+                n += 2  
         equal.append(str(float(number_list[x-1])/float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -537,30 +496,27 @@ class BasicCalculator():
     def BC_add(self, number_list):
         equal = []
         x = number_list.index("+")
-        if number_list[x-1] == "pi":
-            number_list[x-1] = math.pi
-        else:
-            pass
-        if number_list[x+1] == "pi":
-            number_list[x+1] = math.pi
-        else:
-            pass
-        if number_list[x-1] == "e":
-            number_list[x-1] = math.e
-        else:
-            pass
-        if number_list[x+1] == "e":
-            number_list[x+1] = math.e
-        else:
-            pass
-        if number_list[x-1] == "t":
-            number_list[x-1] = math.tau
-        else:
-            pass
-        if number_list[x+1] == "t":
-            number_list[x+1] = math.tau
-        else:
-            pass
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "pi":
+                number_list[n] = math.pi
+                n += 2
+            else:
+                n += 2
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "e":
+                number_list[n] = math.e
+                n += 2
+            else:
+                n += 2    
+                n = x-1
+        for n in range(2):
+            if number_list[n] == "t":
+                number_list[n] = math.tau
+                n += 2
+            else:
+                n += 2  
         equal.append(str(float(number_list[x-1])+float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         
@@ -569,30 +525,27 @@ class BasicCalculator():
     def BC_sub(self, number_list):
         equal = []
         x = number_list.index("-")
-        if number_list[x-1] == "pi":
-            number_list[x-1] = math.pi
-        else:
-            pass
-        if number_list[x+1] == "pi":
-            number_list[x+1] = math.pi
-        else:
-            pass
-        if number_list[x-1] == "e":
-            number_list[x-1] = math.e
-        else:
-            pass
-        if number_list[x+1] == "e":
-            number_list[x+1] = math.e
-        else:
-            pass
-        if number_list[x-1] == "t":
-            number_list[x-1] = math.tau
-        else:
-            pass
-        if number_list[x+1] == "t":
-            number_list[x+1] = math.tau
-        else:
-            pass
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "pi":
+                number_list[n] = math.pi
+                n += 2
+            else:
+                n += 2
+        n = x-1
+        for n in range(2):
+            if number_list[n] == "e":
+                number_list[n] = math.e
+                n += 2
+            else:
+                n += 2    
+                n = x-1
+        for n in range(2):
+            if number_list[n] == "t":
+                number_list[n] = math.tau
+                n += 2
+            else:
+                n += 2  
         equal.append(str(float(number_list[x-1])-float(number_list[x+1])))
         y = number_list[:(x-1)] + equal + number_list[(x+2):]
         

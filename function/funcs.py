@@ -236,10 +236,8 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 elif str(var) in data['operators_list'][8]:
                     current = rend.render_bc_input_box.get()
                     try:
-                        print(str(current[-1]))
-                        if str(current[-1]) in str(data['number_list']) or str(current[-1]) == "π":
+                        if str(current[-1]) in str(data['number_list']) or str(current[-1]) == ")":
                             rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
-                            print('s')
                             rend.render_bc_input_box.insert(0, str(current)+"!")
                         else:
                             pass
@@ -254,7 +252,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                         if current[-1] in data['operators_chars']: #Pokud je poslední znak jiný operátor, příkaz se přeskočí
                             pass
                         else:
-                            if current[-1] == "(": #Pokud je poslední znak otevřená závorka, příkaz se přeskočí
+                            if current[-1] == "(" or current[-1] == "[": #Pokud je poslední znak otevřená závorka, příkaz se přeskočí
                                 pass
                             else:
                                 if str(var) == "SQ": #Pokud je operace druhá mocnina
@@ -279,6 +277,10 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     add_oper_val = "("
                 elif str(var) == 'RBRACKET':
                     add_oper_val = ")"
+                elif str(var) == 'ABSLBRACKET':
+                    add_oper_val = "["
+                elif str(var) == 'ABSRBRACKET':
+                    add_oper_val = "]"
                 current = rend.render_bc_input_box.get()
                 if str(var) == "LBRACKET":
                     if current != "":

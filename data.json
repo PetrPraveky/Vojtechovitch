@@ -30,11 +30,15 @@
     ],
     "add_operators_list": [
         "LBRACKET",
-        "RBRACKET"
+        "RBRACKET",
+        "ABSLBRACKET",
+        "ABSRBRACKET"
     ],
     "add_operators_char": [
         "(",
-        ")"
+        ")",
+        "[",
+        "]"
     ],
     "number_list": [
         1,
