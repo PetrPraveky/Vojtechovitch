@@ -15,7 +15,9 @@ class OpenFile():
         data = json.load(g) #Načtení dat
         g.close() #Zavření původního souboru
     
-geo_list = ['sin', 'cos', 'tg']
+angle_val = 0
+# 0 - degreese
+# 1 - radians
 
 class BasicCalculator():
     def BC_number_sort(self, number):
@@ -100,6 +102,20 @@ class BasicCalculator():
                             break
                     else:
                         break
+                n, i = 0, 0
+                for m in cycle(range(0, 1)):
+                    try:
+                        if number_list[n] == "|":
+                            i += 1
+                            n += 1
+                        else:
+                            n += 1
+                    except:
+                        break
+                if i%2 != 0:
+                    number_list.append('|')
+                else:
+                    pass
                 
                 print(number_list)
                 
@@ -119,6 +135,7 @@ class BasicCalculator():
             y = self.BC_calculation(number_list)
             y = y[0]
         return y
+    
     
     
     def BC_brackets(self, number_list):
@@ -200,10 +217,14 @@ class BasicCalculator():
     def BC_calculation(self, number_list):
         for n in cycle(range(0,1)):
             try:
-                if '[' in number_list:
-                    number_list = self.BC_abs_brackets(number_list)
-                    print(5)
-                    continue
+                #Absolutní hodnota
+                if '|' in number_list:
+                    number_list = self.BC_absol_val(number_list)
+                    if number_list == 'Err':
+                        return str(number_list)
+                    else:
+                        continue
+                #Faktoriál
                 if '!' in number_list:
                     number_list = self.BC_factorial(number_list)
                     if number_list == "Err":
@@ -213,7 +234,15 @@ class BasicCalculator():
                 #Mocnina
                 elif '^' in number_list:
                     number_list = self.BC_exponent(number_list)
-                #Trigonoometrické funkce:
+                #Logaritmy
+                elif "log" in number_list or "ln" in number_list:
+                    if "log" in number_list:
+                        number_list = self.BC_log(number_list)
+                        continue
+                    elif 'ln' in number_list:
+                        number_list = self.BC_ln(number_list)
+                        continue
+                #Trigonoometrické funkce
                 elif "sin" in number_list or "cos" in number_list or "tg" in number_list:
                     if "sin" in number_list:
                         number_list = self.BC_geo_sin(number_list)
@@ -227,7 +256,7 @@ class BasicCalculator():
                             return str(number_list)
                         else:
                             continue
-                #Cyklometrické funkce:
+                #Cyklometrické funkce
                 elif "asin" in number_list or "acos" in number_list or "atg" in number_list:
                     if "asin" in number_list:
                         number_list = self.BC_geo_asin(number_list)
@@ -283,13 +312,111 @@ class BasicCalculator():
                 else:
                     continue
             except Exception as err:
-                print(7)
-                print(number_list)
                 print(err)
                 break
         
-        print(4) 
         return number_list
+ 
+ 
+       
+    def BC_absol_val(self, number_list):
+        if "|" in number_list:
+            for n in cycle(range(0,1)):
+                m = 0
+                l_bracket, r_bracket = [], []
+                #Začátky absolutních hodnot
+                for n in range(len(number_list)):
+                    #Zda-li je absolutní hodnota na začátku
+                    if m == 0 and number_list[m] == "|":
+                        l_bracket.append(0)
+                        m += 1
+                    else:
+                        try:
+                            if number_list[m] == "|" and number_list[m-1] in data['operators_chars'] or number_list[m] == "|" and number_list[m-1] == "(":
+                                l_bracket.append(n)
+                                m += 1
+                            elif number_list[m] == "|" and m-1 in l_bracket:
+                                l_bracket.append(m)
+                                m += 1
+                            else:
+                                m += 1
+                        except:
+                            break
+                #Konec absolutních hodnot
+                m = int(len(number_list)-1)
+                for n in range(len(number_list)):
+                    if m == int(len(number_list)-1) and number_list[m] == "|":
+                        r_bracket.append(m)
+                        m = m-1
+                    else:
+                        try:
+                            if number_list[m] == "|" and number_list[m+1] in data['operators_chars'] or number_list[m] == "|" and number_list[m+1] == ")":
+                                r_bracket.append(m)
+                                m = m-1
+                            elif number_list[m] == "|" and m+1 in r_bracket:
+                                r_bracket.append(m)
+                                m = m-1
+                            else:
+                                m = m-1
+                        except:
+                            break
+                r_bracket.reverse()
+                for n in range(len(l_bracket)):
+                    if l_bracket[n] in r_bracket:
+                        return ['Err']
+                    else:
+                        pass
+                if len(l_bracket) != len(r_bracket):
+                    return ['Err']
+                #Funkce na správné nalezení dvojic
+                def bracket_index():
+                    l_bracket_index = l_bracket.index(max(l_bracket))
+                    r_bracket_index = r_bracket.index(min(r_bracket))
+                    for n in range(len(l_bracket)):
+                        if l_bracket[l_bracket_index] > r_bracket[r_bracket_index]:
+                            r_bracket_index += 1
+                    return l_bracket_index, r_bracket_index
+                l_bracket_index, r_bracket_index = bracket_index()
+                #Funkce pro vytvoření správného listu hodnot:
+                index = int(l_bracket[l_bracket_index])+1
+                brackets_num = []
+                for n in cycle(range(0, 1)):
+                    if index == r_bracket[r_bracket_index]:
+                        break
+                    else:
+                        brackets_num.append(number_list[index])
+                        index += 1
+                #Funkce pro výpočet absolutní hodnoty:
+                for n in range(len(brackets_num)):
+                    if "pi" in brackets_num:
+                        brackets_num[brackets_num.index("pi")] = math.pi
+                    if "e" in brackets_num:
+                        brackets_num[brackets_num.index("e")] = math.e
+                    if "t" in brackets_num:
+                        brackets_num[brackets_num.index("t")] = math.tau
+                for n in range(brackets_num.count('-')):
+                    y = self.BC_calculation(brackets_num)
+                    y[0] = str(math.fabs(float(y[0])))
+                    brackets_num = y
+                number_list[l_bracket[l_bracket_index]] = y[0]
+                remove_index = l_bracket[l_bracket_index]+1
+                for n in cycle(range(0, 1)):
+                    if remove_index > r_bracket[r_bracket_index]:
+                        break
+                    else:
+                        number_list.pop(l_bracket[l_bracket_index]+1)
+                        remove_index += 1
+                        continue
+                if '|' not in number_list:
+                    for n in range(brackets_num.count('+')+brackets_num.count('-')+brackets_num.count('*')+brackets_num.count('/')+brackets_num.count('^')):
+                        y = self.BC_calculation(number_list)
+                        number_list = y
+                    break
+                else:
+                    continue
+        return number_list
+
+
             
     def BC_factorial(self, number_list):
         equal = []
@@ -332,6 +459,34 @@ class BasicCalculator():
         return y
  
  
+ 
+    def BC_log(self, number_list):
+        equal = []
+        x = number_list.index("log")
+        if number_list[x-1] == "pi":
+            number_list[x-1] = math.pi
+        if number_list[x-1] == "e":
+            number_list[x-1] = math.e
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        equal.append(str(math.log10(float(number_list[x+1]))))
+        y = number_list[:(x)] + equal + number_list[(x+2):]
+        return y
+    
+    def BC_ln(self, number_list):
+        equal = []
+        x = number_list.index("ln")
+        if number_list[x-1] == "pi":
+            number_list[x-1] = math.pi
+        if number_list[x-1] == "e":
+            number_list[x-1] = math.e
+        if number_list[x-1] == "t":
+            number_list[x-1] = math.tau
+        equal.append(str(math.log(float(number_list[x+1]))))
+        y = number_list[:(x)] + equal + number_list[(x+2):]
+        return y
+    
+    
     
     def BC_geo_sin(self, number_list):
         equal = []
@@ -342,7 +497,11 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        equal.append(str(math.sin(float(math.radians(number_list[x+1])))))
+        if angle_val == 0:
+            z = float(math.radians(number_list[x+1]))
+        else:
+            pass
+        equal.append(str(math.sin(z)))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
         
@@ -357,7 +516,11 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        equal.append(str(math.cos(float(math.radians(number_list[x+1])))))
+        if angle_val == 0:
+            z = float(math.radians(number_list[x+1]))
+        else:
+            pass
+        equal.append(str(math.cos(z)))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
         
@@ -372,13 +535,17 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
+        if angle_val == 0:
+            z = float(math.radians(number_list[x+1]))
+        else:
+            pass
         try:
             if int(number_list[x+1]) == 90:
-                return ['∞']
+                return ['Err']
             else:
-                equal.append(str(math.tan(float(math.radians(number_list[x+1])))))                
+                equal.append(str(math.tan(z)))                
         except:
-            equal.append(str(math.tan(float(number_list[x+1])*float(math.pi/180))))
+            equal.append(str(math.tan(z)))
         
         y = number_list[:(x)] + equal + number_list[(x+2):]
         
@@ -395,7 +562,11 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        equal.append(str(math.degrees(math.asin(float(number_list[x+1])))))
+        if angle_val == 0:
+            z = str(math.degrees(math.asin(float(number_list[x+1]))))
+        else:
+            z = str(math.asin(float(number_list[x+1])))
+        equal.append(z)
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
         
@@ -410,7 +581,11 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        equal.append(str(math.degrees(math.acos(float(number_list[x+1])))))
+        if angle_val == 0:
+            z = str(math.degrees(math.acos(float(number_list[x+1]))))
+        else:
+            z = str(math.acos(float(number_list[x+1])))
+        equal.append(z)
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
         
@@ -425,7 +600,11 @@ class BasicCalculator():
             number_list[x-1] = math.e
         if number_list[x-1] == "t":
             number_list[x-1] = math.tau
-        equal.append(str(math.degrees(math.atan(float(number_list[x+1])))))
+        if angle_val == 0:
+            z = str(math.degrees(math.atan(float(number_list[x+1]))))
+        else:
+            z = str(math.atan(float(number_list[x+1])))
+        equal.append(z)
 
         y = number_list[:(x)] + equal + number_list[(x+2):]
         

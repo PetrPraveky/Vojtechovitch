@@ -31,14 +31,12 @@
     "add_operators_list": [
         "LBRACKET",
         "RBRACKET",
-        "ABSLBRACKET",
-        "ABSRBRACKET"
+        "ABSVAL"
     ],
     "add_operators_char": [
         "(",
         ")",
-        "[",
-        "]"
+        "|"
     ],
     "number_list": [
         1,
@@ -60,11 +58,16 @@
         "ACOS",
         "ATG"
     ],
+    "func_opers": [
+        "LOG",
+        "IN"
+    ],
     "char_list": [
         "a",
         "c",
         "g",
         "i",
+        "l",
         "n",
         "o",
         "s",

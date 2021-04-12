@@ -58,12 +58,13 @@ class Render(funcs.Func):
         self.render_dark_light_mode(mode)
         #Vytvoření, které pokrývá celou aplikaci
         render_main_frame = Frame(self.main_root, bg=main_background_color)
-        render_main_frame.grid_columnconfigure(0, weight=1)
+        render_main_frame.grid_columnconfigure(0, weight=0)
+        render_main_frame.grid_columnconfigure(1, weight=1)
         render_main_frame.grid_rowconfigure(0, weight=0)
         #Zavolání funkce pro vytvožení horní lišty
         self.render_upper_bar()
         #Vykreslení horní lišty
-        render_upper_bar_frame.grid(row = 0, column=0, sticky='ew')
+        render_upper_bar_frame.grid(row = 0, column=0, sticky='ew', columnspan=2)
         #Výběr vykleslení správného okna
         if option == 0: #Pokud je možnost 0 == kalkulačka
             self.render_basic_calculator() #Funkce renderu kalkulačky
@@ -149,8 +150,8 @@ class Render(funcs.Func):
         render_bc_button_1_3 = Button(render_bc_frame, padx=10, pady=6, text="×", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('oper', 'MUL'))
         render_bc_button_1_4 = Button(render_bc_frame, padx=11, pady=6, text="/", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('oper', 'DIV'))
         render_bc_button_1_5 = Button(render_bc_frame, padx=4, pady=6, text=" sin ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('geom', 'SIN'))
-        render_bc_button_1_6 = Button(render_bc_frame, padx=2, pady=6, text=" log ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
-        render_bc_button_1_7 = Button(render_bc_frame, padx=13, pady=6, text="", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_bc_button_1_6 = Button(render_bc_frame, padx=2, pady=6, text=" log ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('func', 'LOG'))
+        render_bc_button_1_7 = Button(render_bc_frame, padx=8, pady=6, text="ln", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('func', 'LN'))
         #Řádek 2
         render_bc_button_2_0 = Button(render_bc_frame, padx=10, pady=6, text="√", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('oper', 'SQROOT'))
         render_bc_button_2_1 = Button(render_bc_frame, padx=11, pady=6, text="7", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('num', 7))
@@ -159,7 +160,7 @@ class Render(funcs.Func):
         render_bc_button_2_4 = Button(render_bc_frame, padx=11, pady=6, text="-", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('oper', 'SUB'))
         render_bc_button_2_5 = Button(render_bc_frame, padx=2, pady=6, text=" cos ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('geom', 'COS'))
         render_bc_button_2_6 = Button(render_bc_frame, padx=11, pady=6, text="!", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('oper', 'FAC'))
-        render_bc_button_2_7 = Button(render_bc_frame, padx=13, pady=6, text="", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_bc_button_2_7 = Button(render_bc_frame, padx=11, pady=6, text="|", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('add_oper', 'ABSVAL'))
 
         #Řádek 3
         render_bc_button_3_0 = Button(render_bc_frame, padx=11, pady=6, text="↑", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command=lambda: self.func_calc_shift_up())
@@ -177,7 +178,7 @@ class Render(funcs.Func):
         render_bc_button_4_3 = Button(render_bc_frame, padx=11, pady=6, text="3", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('num', 3))
         render_bc_button_4_4 = Button(render_bc_frame, padx=12, pady=6, text=",", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('dec', "."))
         render_bc_button_4_5 = Button(render_bc_frame, padx=11, pady=6, text="=", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('equal', 'eq'))
-        render_bc_button_4_6 = Button(render_bc_frame, padx=6, pady=6, text="°'''", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_bc_button_4_6 = Button(render_bc_frame, padx=6, pady=6, text="°'''", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('equal', 'deg'))
         render_bc_button_4_7 = Button(render_bc_frame, padx=9, pady=6, text="π", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', command= lambda: self.func_calc_input('snum', 'pi'))
         #Vykreslení tlačítek
         #Řádek 0
