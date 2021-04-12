@@ -39,25 +39,22 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
     #Funkce zavření okna
     def func_quit(self, root):
         root.destroy()
-    
+    #Funkce pro vykreslení základní kalkulačky
     def func_render_BC(self):
-        rend.render_main_frame.pack_forget()
-        self.file_opener()
-        self.render_main(data['dark_light_mode'], 0)
-        
+        rend.render_main_frame.pack_forget() #Vypnutí případné otevřené jiné aplikace
+        self.file_opener() #Zavolání funkce na otevírání souborů
+        self.render_main(data['dark_light_mode'], 0) #Vykreslení okna
+    #FUnkce pro vykreslení převodů jednotek
     def func_render_unit(self):
-        rend.render_main_frame.pack_forget()
-        self.file_opener()
-        self.render_main(data['dark_light_mode'], 1)
-        
-    
+        rend.render_main_frame.pack_forget() #Vypnutí případné otevřené jiné aplikace
+        self.file_opener() #Zavolání funkce na otevírání souborl
+        self.render_main(data['dark_light_mode'], 1) #Vykreslení okna    
     #Funkce obnovení okna díky oknu možností
     def func_mode_reload(self, root, val, option):
         self.func_quit(root) #Zavření okna možnosti
         rend.render_main_frame.pack_forget() #"Zapomenutí" hlavního rámu
-        self.func_settings_change(val)
+        self.func_settings_change(val) #Zapsání nové hodnoty do souboru
         self.render_main(val, option) #Znovu vytvoření hlavního rámu
-        
     #Funkce pro uložení změny vzhledu
     def func_settings_change(self, val):
         with open(os.path.join('', 'data.json'), "r+") as t: #Otevření dat s módem zapisování
@@ -67,7 +64,6 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
             json.dump(new_data, t, indent=4) #Přepsání starých dat s novými
             t.truncate()
             t.close() #Zavření souboru
-            
     #Funkce pro uložení jazyka
     def func_locale_save(self):
         with open(os.path.join('', 'data.json'), "r+") as h: #Otevření dat s módem zapisování
@@ -77,11 +73,9 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
             json.dump(new_data, h, indent=4) #Přepsání starých dat s novými
             h.truncate()
             h.close() #Zavření souboru
-    
     #Funkce změny vzhledu
     def func_appear_change(self, val):
         print("\ndakr/light mode has been set to: "+str(val)) #Vypsání změny vzhledu do konzole pro debug   
-        
     #Funkce na změnu jazyka    
     def func_laguage_change(self, root, value, option):
         print("\nlocalisation file set to: "+value) #Vypsní změny jazky do koncole pro debug
@@ -90,8 +84,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         self.func_quit(root) #Zavření okna
         rend.render_main_frame.pack_forget() #Resetování hlavního rámu
         self.file_opener() #Znovu načtení dat se změnou
-        self.render_main(data['dark_light_mode'], option) #Znovu vykreslení rámu
-        
+        self.render_main(data['dark_light_mode'], option) #Znovu vykreslení rámu   
     #Funkce pro vyčištění kalkulátoru
     def func_calc_clear(self, mode):
         if mode == 'line': #Vyčištění řádku
@@ -99,18 +92,18 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         else: #Vyčištění poslední hodnoty/znaku
             current = rend.render_bc_input_box.get() #Získání dat z řádku
             if current != "": #Testuje, zda-li je řádek prázdný
-                if str(current[-1]) in data['char_list']:
-                    m = -1
-                    for n in cycle(range(0, 1)):
-                        try:
-                            if str(current[m]) in data['char_list']:
-                                m -= 1
+                if str(current[-1]) in data['char_list']: #Pokud poslední znak je v listu povolených písmen:
+                    m = -1 #Vytvoření hodnory
+                    for n in cycle(range(0, 1)): #Nekonečný cyklus
+                        try: #Pokus
+                            if str(current[m]) in data['char_list']: #Pokud je další znak v listu:
+                                m -= 1 #Odečte 1 od hodnoty
                                 continue
-                            else:
-                                break
-                        except:
-                            break
-                    current = current[:(m+1)]
+                            else: #Jinak
+                                break #Zlomí cylkus
+                        except: #Pokud naskytne chyba (hodnota "m" již není v listu)
+                            break #Zlomí cyklus
+                    current = current[:(m+1)] #Odebrání znaku hodnory "m" od řádku
                     rend.render_bc_input_box.delete(0, 'end') #Vymazní řádku
                     rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
                 else:
@@ -125,7 +118,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                 if int(var) in data['number_list']: #Testuje, zda-li je číslo platné
                     current = rend.render_bc_input_box.get() #Záskání dat z řádku
                     if current == "0" and int(var) == 0: #Pokud-li jediné, co řádek obsahuje je 0, nenapíše další nulu
-                        pass
+                        pass #Překosčí příkaz
                     else: #Ostatní možnosti
                         try: #Testování errorů
                             if current == "0": #Pokud-li jediné, co řádek obsahuje je 0, číslo nulu přepíše
@@ -133,8 +126,8 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 rend.render_bc_input_box.insert(0, str(var)) #Vypsání nového řádku
                             else: #Ostatní možnosti
                                 try:
-                                    if current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ':
-                                        pass
+                                    if current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ': #Pokud je poslendí číslo nějaké ze speciálních
+                                        pass #Přeskoží příkat
                                     else:
                                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                         rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
@@ -143,47 +136,50 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                     rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
                         except: #Pokud-li přijde error, přeskočí příkaz
                             pass
-            except:
-                if var == "E":
-                    current = rend.render_bc_input_box.get()
-                    try:
-                        int(current[-1])
+            except: #Pokud hodnota není číslo
+                if var == "E": #Pokud je "E" jako číslo
+                    current = rend.render_bc_input_box.get() #Získání dat z řádku
+                    try: #Pokus
+                        int(current[-1]) #Pokud je poslední znak číslo
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                         rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
-                    except:
-                        pass
-        elif mode == "snum":
-            current = rend.render_bc_input_box.get()
-            if str(var) == 'pi':
-                if current == "":   
+                    except: #Pokud poslední znak není číslo
+                        pass #Překočí příkaz
+        elif mode == "snum": #Testuje, zda-li je zadané speciální číslo
+            current = rend.render_bc_input_box.get() #Získání dat  zřádku
+            if str(var) == 'pi': #Pokud je zadané číslo pí
+                if current == "": #Pokud je řádek prázdný
                     rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                    rend.render_bc_input_box.insert(0, str(current)+'π')
-                else:
+                    rend.render_bc_input_box.insert(0, str(current)+'π') #Vypsání nového řádku
+                else: #Jinak
+                    #Pokud je poslední hodnota znaménko, otevřená závorka nebo absolutní hodnota
                     if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "" or str(current[-1]) == "|":
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                        rend.render_bc_input_box.insert(0, str(current)+'π')
-                    else:
-                        pass
-            elif str(var) == 'e':
-                if current == "":   
+                        rend.render_bc_input_box.insert(0, str(current)+'π') #Vypsnání nového řádku
+                    else: #Jinak
+                        pass #Přeskočit příkaz
+            elif str(var) == 'e': #Pokud je zadané číslo eulerovo číslo
+                if current == "": #Pokud je řádek prázdný
                     rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                    rend.render_bc_input_box.insert(0, str(current)+'e')
+                    rend.render_bc_input_box.insert(0, str(current)+'e') #Vypsnání nového řádku
                 else:
+                    #Pokud je poslední hodnota znaménko, otevřená závorka nebo absolutní hodnota
                     if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "" or str(current[-1]) == "|":
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                        rend.render_bc_input_box.insert(0, str(current)+'e')
-                    else:
-                        pass
-            elif str(var) == 't':
-                if current == "":   
+                        rend.render_bc_input_box.insert(0, str(current)+'e') #Vypsání nového řádku
+                    else: #Jinak
+                        pass #Přeskočit
+            elif str(var) == 't': #Testuje, zda-li zadané číslo je tau
+                if current == "": #Pokud je řádek prázdný
                     rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                    rend.render_bc_input_box.insert(0, str(current)+'τ')
-                else:
+                    rend.render_bc_input_box.insert(0, str(current)+'τ') #Vypsání nového řádku
+                else: #Jinak
+                    #Pokud je poslední hodnota znaménko, otevřená závorka nebo absolutní hodnota
                     if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "" or str(current[-1]) == "|":
                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
-                        rend.render_bc_input_box.insert(0, str(current)+'τ')
-                    else:
-                        pass
+                        rend.render_bc_input_box.insert(0, str(current)+'τ') #Vypsání nového řádku
+                    else: #Jinak
+                        pass #Přeskočit
         elif mode == "oper": #Testuje, zda-li je zadaná operace
             if str(var) in data['operators_list']: #Testuje, zda-li je operace platná
                 if str(var) == "ADD": #Pokud je operace sčítání
@@ -216,44 +212,47 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                     pass
                                 else:
                                     if str(current[-1]) in data["operators_chars"] and str(current[-1]) != '!': #Testuje, jestli je poslední znak mezi znakama operací
-                                        try:
-                                            if current[-2] == "E": #Pokud je předposlední znak otevřené závorka, příkaz se přeskočí
+                                        try: #Pokus
+                                            #Pokud je poslední znak E, tj 10^x, tak příkaz přeskočí
+                                            if current[-2] == "E" and current[-1] == "-":
                                                 pass
-                                            elif current[-3] == ")":
+                                            #Pokud-li jsou poslední třy znaky "(0-", příkaz přeskočí
+                                            elif current[-3] == "(" and current[-1] == "-" and current[-2] == "0":
                                                 pass
-                                            else:
+                                            else: #Jinak
                                                 current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový
                                                 rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                                 rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku
-                                        except:
+                                        except: #Pokud index již není součástí listu
                                             current = str(current[:-1])+str(oper_val) #Přepsání starého znaku operace za nový
                                             rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                             rend.render_bc_input_box.insert(0, str(current)) #Vypsání nového řádku 
-                                    else:
+                                    else: #Jinak
                                         rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
                                         rend.render_bc_input_box.insert(0, str(current)+str(oper_val)) #Vypsání nového řádku
-                elif str(var) in data['operators_list'][8]:
-                    current = rend.render_bc_input_box.get()
-                    try:
+                elif str(var) in data['operators_list'][8]: #Pokud je oprátr "faktoriál"
+                    current = rend.render_bc_input_box.get() #Získání dat z řdku
+                    try: #Pokus
+                        #Pokud-li je poslední znak číslo, konec závorky nebo absolutní hodnota
                         if str(current[-1]) in str(data['number_list']) or str(current[-1]) == ")"  or str(current[-1]) == "|":
                             rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku             
-                            rend.render_bc_input_box.insert(0, str(current)+"!")
-                        else:
-                            pass
-                    except ValueError as err:
-                        print(err)
-                        pass
+                            rend.render_bc_input_box.insert(0, str(current)+"!") #Vypsání nového řádku
+                        else: #Jinak
+                            pass #Přeskočí překlad
+                    except ValueError as err: #Chyba
+                        print(err) #Vypsání erroru do konzole
+                        pass #Přeskočení příkazu
                 elif str(var) in data['operators_list'][3:] and str(var) not in data['operators_list'][8:]: #Testuje, zda-li jsou operace mezi pokročilými
                     current = rend.render_bc_input_box.get() #Zíkání dat z řádku
                     if current == "": #Pokud je řádek prázdný, příkaz se přeskočí
-                        pass
-                    else:
+                        pass #Přeskočení příkazu
+                    else: #Jinak
                         if current[-1] in data['operators_chars']: #Pokud je poslední znak jiný operátor, příkaz se přeskočí
-                            pass
-                        else:
+                            pass #Přeskočí příkaz
+                        else: #Jinak
                             if current[-1] == "(": #Pokud je poslední znak otevřená závorka, příkaz se přeskočí
-                                pass
-                            else:
+                                pass #Přeskočí příkat
+                            else: #Jinak
                                 if str(var) == "SQ": #Pokud je operace druhá mocnina
                                     rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                     rend.render_bc_input_box.insert(0, str(current)+"^(2)") #Vypsání nového řádku
@@ -266,123 +265,118 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 elif str(var) == "NROOT": #Pokud je operace odmocnina na "entou"
                                     rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
                                     rend.render_bc_input_box.insert(0, str(current)+"^(1/") #Vypsání nového řádku   
-                                else:
-                                    pass
-                else:
-                    pass
-        elif mode == "add_oper":
-            if str(var) in data['add_operators_list']:
-                if str(var) == 'LBRACKET':
+                                else: #Jinak
+                                    pass #Přeskočí příkaz
+                else: #Jinak
+                    pass #Přeskočí příkaz
+        elif mode == "add_oper": #Testuje, zda-li je mód závorky nebo absolutní hodnota
+            if str(var) in data['add_operators_list']: #Pokud je to v listu těchto hodnot
+                if str(var) == 'LBRACKET': #Připsání hodnoty k levé závorce
                     add_oper_val = "("
-                elif str(var) == 'RBRACKET':
+                elif str(var) == 'RBRACKET': #Připsání hodnoty k pravé závorce
                     add_oper_val = ")"
-                elif str(var) == 'ABSVAL':
+                elif str(var) == 'ABSVAL': #Připsání hodnoty k absolutní hodnotě
                     add_oper_val = "|"
-                current = rend.render_bc_input_box.get()
-                if str(var) == "LBRACKET":
-                    if current != "":
-                        if current[-1] == ".":
-                            pass
-                        elif current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ':
-                            pass 
-                        else:
-                            try:
-                                if int(current[-1]) in data['number_list']:
-                                    pass
-                                else:
-                                    rend.render_bc_input_box.delete(0, 'end')             
-                                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))
-                            except:
-                                rend.render_bc_input_box.delete(0, 'end')             
-                                rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))
-                    else:
-                        rend.render_bc_input_box.delete(0, 'end')             
-                        rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))
-                elif str(var) == 'RBRACKET':
-                    if current != "" and str(current[-1]) != ".":
-                        n = 0
-                        lbr_num = 0
-                        while n < len(current):
-                            if str(current[n]) == "(":
-                                lbr_num += 1
-                                n += 1
-                            else:
-                                n += 1
-                        n = 0
-                        rbr_num = 0
-                        while n < len(current):
-                            if str(current[n]) == ")":
-                                rbr_num += 1
-                                n += 1
-                            else:
-                                n += 1
-                        if rbr_num < lbr_num:
-                            if str(current[-1]) in data['operators_chars']:
-                                pass
-                            elif str(current[-1]) == "(":
-                                try:
-                                    if str(current[-2]) == "^":
-                                        current = current[:-2]
-                                    else:
-                                        current = current[:-1]   
-                                except:
-                                    current = current[:-1]                             
-                                rend.render_bc_input_box.delete(0, 'end')               
-                                rend.render_bc_input_box.insert(0, str(current))
-                            else:
-                                if rbr_num > 0:
-                                    rend.render_bc_input_box.delete(0, 'end')             
-                                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))                                   
-                                else:
-                                    rend.render_bc_input_box.delete(0, 'end')             
-                                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))
-                        else:
-                            print(str(lbr_num)+" "+str(rbr_num))
-                            print('err')
-                    else:
-                        pass
-                elif str(var) == 'ABSVAL':
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val))
-            else:
-                pass
-        elif mode == "geom":
-            if str(var) == 'SIN':
+                current = rend.render_bc_input_box.get() #Získání dat z řádku
+                if str(var) == "LBRACKET": #Pokud je příkaz levá závorka
+                    if current != "": #Pokud řádek není prázdný
+                        if current[-1] == ".": #Pokud poslední znak je desetinná čárka
+                            pass #Přeskočí
+                        elif current[-1] == 'π' or current[-1] == 'e' or current[-1] == 'τ': #Pokud poslednáí znak je speciální číslo
+                            pass  #Přeskočí
+                        else: #Jinak
+                            try: #Pokus
+                                if int(current[-1]) in data['number_list']: #Je li poslední znak v listu čísel
+                                    pass #Přeskočí
+                                else: #Jinak
+                                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val)) #Vypsání nového řádku
+                            except: #Pokud-li nastane chyba
+                                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                                rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val)) #Vypsání nového řádku
+                    else: #Jinak
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku            
+                        rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val)) #Vypsání nového řádku
+                elif str(var) == 'RBRACKET': #Pokud je příkaz pravá závorka
+                    if current != "" and str(current[-1]) != ".": #Pokud poslední znak není desetinná čárka nebo řádek není prázdny
+                        n = 0 #Vytvoření proměnné
+                        lbr_num = 0 #Vytvoření proměnné
+                        while n < len(current): #Cyklus dokud je "n" menší jak délka řádku
+                            if str(current[n]) == "(": #Pokud li je v řádku závorka
+                                lbr_num += 1 #Přičte k hodnotě 1
+                                n += 1 #Přičte k hodnotě 1
+                            else: #Jinak
+                                n += 1 #Přičte k hodnotě 1
+                        n = 0 #Resetování proměnné
+                        rbr_num = 0 #Vytvoření proměnné
+                        while n < len(current): #Cyklus dokud je "n" menší jak dílka řádku
+                            if str(current[n]) == ")": #Pokud li je v řádku uzavírací závorka
+                                rbr_num += 1 #Přičte k hodnotě 1
+                                n += 1 #Přičte k hodnotě 1
+                            else: #Jinak
+                                n += 1 #Přičte k hodnotě 1
+                        if rbr_num < lbr_num: #Pokud si hodnoty nejsou rovny
+                            if str(current[-1]) in data['operators_chars']: #Pokud je poslendní znak v řádku operátor
+                                pass #Přeskočí příkaz
+                            elif str(current[-1]) == "(": #Pokudd-li je poslední znak v řádku závorka
+                                try: #Zkusí
+                                    if str(current[-2]) == "^": #Pokud je předposlendí znak "^"
+                                        current = current[:-2] #Vymaže závorku i znak "^"
+                                    else: #Jinak
+                                        current = current[:-1] #Vymaže závorku
+                                except: #Pokud-li nastane chyba délky listu
+                                    current = current[:-1] #Vymaže závorku            
+                                rend.render_bc_input_box.delete(0, 'end') #Vymaže řádek              
+                                rend.render_bc_input_box.insert(0, str(current)) #Vypíše nový řádek
+                            else: #Jinak
+                                rend.render_bc_input_box.delete(0, 'end') #Vymaže řádek            
+                                rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val)) #Vypíše nový řádek
+                        else: #Jinak
+                            pass #Přeskočí příkaz
+                    else: #Jinak
+                        pass #Přeskočí příkaz
+                elif str(var) == 'ABSVAL': #Pokud je příkaz absolutní hodnota
+                    rend.render_bc_input_box.delete(0, 'end') #Vymaže řádek
+                    rend.render_bc_input_box.insert(0, str(current)+str(add_oper_val)) #Vypíše nový řádek
+            else: #Jinak
+                pass #Přeskočí pžíkaz
+        elif mode == "geom": #Testuje, zda-li je mód goniometrických funkcí
+            if str(var) == 'SIN': #Připíše k hodně "sin"
                 geo_val = 'sin('
-            elif str(var) == 'COS':
+            elif str(var) == 'COS': #Připíše k hodnotě "cos"
                 geo_val = 'cos('
-            elif str(var) == 'TG':
+            elif str(var) == 'TG': #Připíše k hodnotě "tg"
                 geo_val = 'tg('
-            elif str(var) == 'ASIN':
+            elif str(var) == 'ASIN': #Připíše k hodnotě "asin"
                 geo_val = 'asin('
-            elif str(var) == 'ACOS':
+            elif str(var) == 'ACOS': #Připíše k hodnotě "acos"
                 geo_val = 'acos('
-            elif str(var) == 'ATG':
+            elif str(var) == 'ATG': #Připíše k hodnotě "atg"
                 geo_val = 'atg('            
-            current = rend.render_bc_input_box.get()
-            try:
-                if current[-1] in data['operators_chars'] and current[-1] != '!':
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(current)+str(geo_val))
-                else:
-                    if str(current[-1]) == '(' or str(current[-1]) == "|":
-                        rend.render_bc_input_box.delete(0, 'end')             
-                        rend.render_bc_input_box.insert(0, str(current)+str(geo_val))
-                    else:
-                        pass
-            except:
-                rend.render_bc_input_box.delete(0, 'end')             
-                rend.render_bc_input_box.insert(0, str(current)+str(geo_val))                
-        elif mode == "dec":
-            current = rend.render_bc_input_box.get()
-            try:
-                if int(current[-1]) in data['number_list']:
-                    rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(current)+str(var))
-                else:
-                    pass
-            except:
-                pass
+            current = rend.render_bc_input_box.get() #Získání dat z řádku
+            try: #Pokus
+                if current[-1] in data['operators_chars'] and current[-1] != '!': #Je-li jako poslední znak opěráter bez faktoriálnu
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                    rend.render_bc_input_box.insert(0, str(current)+str(geo_val)) #Vypsání nového řádku
+                else: #Jinak
+                    if str(current[-1]) == '(' or str(current[-1]) == "|": #Pokud je jako poslední znak otevírací závorka neob absolutní hodnota
+                        rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                        rend.render_bc_input_box.insert(0, str(current)+str(geo_val)) #Vypsání nového řádku
+                    else: #Jinak
+                        pass #Přeskočí příkaz
+            except: #Je-li chyba v délce řádku
+                rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku          
+                rend.render_bc_input_box.insert(0, str(current)+str(geo_val)) #Vypsání nového řádku          
+        elif mode == "dec": #Testuje, zda-li je mód desetinné čárky
+            current = rend.render_bc_input_box.get() #Získání dat z řádku
+            try: #Pokus
+                if int(current[-1]) in data['number_list']: #Je-li poslední znak číslo
+                    rend.render_bc_input_box.delete(0, 'end') #Vymazání řádku
+                    rend.render_bc_input_box.insert(0, str(current)+str(var)) #Vypsání nového řádku
+                else: #Jinak
+                    pass #Přeskočí příkaz
+            except: #V chybě hodnoty
+                pass #Přeskočí příkaz
         elif mode == "func":
             current = rend.render_bc_input_box.get()
             if str(var) == "LOG":
@@ -427,7 +421,7 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                     z = floor((float(current)-x-(y/60))*6000)
                     print(z)
                     rend.render_bc_input_box.delete(0, 'end')             
-                    rend.render_bc_input_box.insert(0, str(x)+'°'+str(y)+"'"+str(z)+"''")                 
+                    rend.render_bc_input_box.insert(0, "~ "+str(x)+'°'+str(y)+"'"+str(z)+"''")                 
                 except:
                     pass
 

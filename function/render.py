@@ -300,23 +300,25 @@ class Render(funcs.Func):
         render_bc_memory_frame.grid(row=2, column=0, sticky='w', padx=50)
     
     def render_BC_memory_more(self, index):
-        render_BC_memory_more_window = Toplevel()
-        render_BC_memory_more_window.title(locale['BC_memory_more_window'])
-        render_BC_memory_more_window.geometry(str(data['BC_memory_resolution']))
-        render_BC_memory_more_window.resizable(0, 0)
-        render_BC_memory_more_window.config(bg=mode_window_background_color, relief='flat')
-        
+        render_BC_memory_more_window = Toplevel() #Vykreslení nového okna
+        render_BC_memory_more_window.title(locale['BC_memory_more_window']) #Titulek okna
+        render_BC_memory_more_window.geometry(str(data['BC_memory_resolution'])) #Velikost okna
+        render_BC_memory_more_window.resizable(0, 0) #Vypnutí možnosti resizable
+        render_BC_memory_more_window.config(bg=mode_window_background_color, relief='flat') #Pozadí okna
+        #Tlačítko pro vypnuté nového okna
         render_BC_memory_more_exit = Button(render_BC_memory_more_window, bg=mode_window_background_color, text='--  '+locale['BC_memory_more_exit']+'  --', fg=main_text_color, padx=20, command=lambda: render_BC_memory_more_window.destroy())
-        
+        #Text původního vozrce
         render_BC_memory_more_frame = Frame(render_BC_memory_more_window, bg=calc_background_color_1, relief='sunken', borderwidth=2)
-        
+        #Vysledek výpočtu
         render_BC_label = Label(render_BC_memory_more_frame, text=funcs.BC_num_memory[index], bg=mode_window_background_color, fg=main_text_color)
         render_BC_equal_label = Label(render_BC_memory_more_frame, text="=  "+str(funcs.BC_equal_memory[index]), bg=mode_window_background_color, fg=main_text_color)
-        
+        #Vykreslení věcí nahoře
         render_BC_memory_more_frame.pack(fill='both', expand="True", padx=20, pady=10)
         render_BC_label.pack(padx=5, pady=5)
         render_BC_equal_label.pack(padx=5, pady=5)
         render_BC_memory_more_exit.pack(padx=20, pady=10)
+    
+    
     
     #Funkce pro vykreslení převodů jednotek
     def render_unit_conver(self):

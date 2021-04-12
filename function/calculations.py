@@ -117,8 +117,6 @@ class BasicCalculator():
                 else:
                     pass
                 
-                print(number_list)
-                
                 x = self.BC_start(number_list)
                 
                 time_end = time.time()
