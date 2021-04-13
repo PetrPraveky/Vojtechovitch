@@ -48,7 +48,11 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
     def func_render_unit(self):
         rend.render_main_frame.pack_forget() #Vypnutí případné otevřené jiné aplikace
         self.file_opener() #Zavolání funkce na otevírání souborl
-        self.render_main(data['dark_light_mode'], 1) #Vykreslení okna    
+        self.render_main(data['dark_light_mode'], 1) #Vykreslení okna
+    def func_render_GF(self):
+        rend.render_main_frame.pack_forget()
+        self.file_opener()
+        self.render_main(data['dark_light_mode'], 2)
     #Funkce obnovení okna díky oknu možností
     def func_mode_reload(self, root, val, option):
         self.func_quit(root) #Zavření okna možnosti

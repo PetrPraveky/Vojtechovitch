@@ -7,8 +7,9 @@ import os #Připojení modulu os
 import calculations as calc #Připojení modulu kalkulačky
 import unitconver as units #Připojení modulu převodů jednotek
 import funcs as funcs #Připojení modulu funkcí
+import graphfunc as gfunc #Piřpojení modulu grafů funkcí
 
-default = 0 #Základní hodnota pro změnu módu kalkulačky
+default = 2 #Základní hodnota pro změnu módu kalkulačky
 calculator_option = default #Přiřazení základní hodnoty
 
 unit_data_list = ["size", "weight", "time"] #List veličin
@@ -72,6 +73,9 @@ class Render(funcs.Func):
         elif option == 1: #Pokud je možnost 1 == převod jednotek
             self.render_unit_conver() #Funkce renderu převodů jednotek
             render_uc_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30) #Render celých převodů jednotek
+        elif option == 2:
+            self.render_graph_function() #Funkce renderu grafů funkcí
+            render_gf_frame.grid(row=1, column=0, sticky='w', padx=50, pady=30) #Render celých převodů jednotek
         else: 
             pass
         #Vykreslení celého okna
@@ -371,6 +375,119 @@ class Render(funcs.Func):
         render_uc_r_menu.grid(row=4, column=4, sticky='we', padx=5, pady=5)
         render_uc_delete.grid(row=4, column=5, sticky='we', padx=5, pady=5)
         render_uc_switch.grid(row=4, column=6, sticky='we', padx=5, pady=5)      
+    
+    
+    def render_graph_function(self):
+        global render_gf_frame, calculator_option
+        calculator_option = 2
+        #Vytvoření základního rámu okna
+        render_gf_frame = Frame(render_main_frame, bg=calc_background_color_1, relief='sunken', borderwidth="2", padx=4, pady=4)
+        render_upper_list_submenu.entryconfig("×  "+locale['UB_LSM_option_2'], state="disabled") #Vypnutí zvolení tohoto okna v menu
+        #Vytvoření hlavních prvků
+        render_gf_title = Label(render_gf_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['GF_title'], relief='raised')
+        render_gf_title_sep = ttk.Separator(render_gf_frame, orient="horizontal") 
+        render_gf_subtitle_1 = Label(render_gf_frame, bg=calc_background_color_1, font='bold', fg=main_text_color, text=locale['GF_subtitle_1'], relief='raised')
+        #Render systému zadávání
+            #První řada (třetí celkově)
+        render_gf_input_btn1_1 = Button(render_gf_frame, padx=10, pady=6, text="x", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_entry_1_2_6 = Entry(render_gf_frame, width=23, relief='sunken', bg=calc_background_color_2, fg=main_text_color, justify='right', font='bold')
+        render_gf_input_btn1_7 = Button(render_gf_frame, padx=10, pady=6, text="←", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn1_8 = Button(render_gf_frame, padx=10, pady=6, text="C", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn1_9 = Button(render_gf_frame, padx=5, pady=6, text=">>", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+            #Druhý řada (čtvrtá celkově)
+        render_gf_input_btn2_1 = Button(render_gf_frame, padx=10, pady=6, text="y", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_2 = Button(render_gf_frame, padx=9, pady=6, text="x²", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_3 = Button(render_gf_frame, padx=12, pady=6, text="(", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_4 = Button(render_gf_frame, padx=12, pady=6, text=")", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_5 = Button(render_gf_frame, padx=10, pady=6, text="×", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_6 = Button(render_gf_frame, padx=11, pady=6, text="/", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_7 = Button(render_gf_frame, padx=4, pady=6, text=" sin ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_8 = Button(render_gf_frame, padx=2, pady=6, text=" log ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn2_9 = Button(render_gf_frame, padx=8, pady=6, text="ln", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+            #Třetí řada (pátá celkově)
+        render_gf_input_btn3_1 = Button(render_gf_frame, padx=10, pady=6, text=">", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_2 = Button(render_gf_frame, padx=10, pady=6, text="√", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_3 = Button(render_gf_frame, padx=11, pady=6, text="7", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_4 = Button(render_gf_frame, padx=11, pady=6, text="8", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_5 = Button(render_gf_frame, padx=11, pady=6, text="9", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_6 = Button(render_gf_frame, padx=11, pady=6, text="-", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_7 = Button(render_gf_frame, padx=2, pady=6, text=" cos ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_8 = Button(render_gf_frame, padx=11, pady=6, text="!", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn3_9 = Button(render_gf_frame, padx=11, pady=6, text="|", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+            #Čtvrtá řada (šestá celkově)
+        render_gf_input_btn4_1 = Button(render_gf_frame, padx=10, pady=6, text="<", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_2 = Button(render_gf_frame, padx=11, pady=6, text="↑", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_3 = Button(render_gf_frame, padx=11, pady=6, text="4", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_4 = Button(render_gf_frame, padx=11, pady=6, text="5", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_5 = Button(render_gf_frame, padx=11, pady=6, text="6", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_6 = Button(render_gf_frame, padx=10, pady=6, text="+", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_7 = Button(render_gf_frame, padx=6, pady=6, text=" tg ", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_8 = Button(render_gf_frame, padx=0, pady=6, text="10^x", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn4_9 = Button(render_gf_frame, padx=10, pady=6, text="e", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+            #Pátá řada (sedmá celkově)
+        render_gf_input_btn5_1 = Button(render_gf_frame, padx=11, pady=6, text="=", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_2 = Button(render_gf_frame, padx=11, pady=6, text="0", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_3 = Button(render_gf_frame, padx=11, pady=6, text="1", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_4 = Button(render_gf_frame, padx=11, pady=6, text="2", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_5 = Button(render_gf_frame, padx=11, pady=6, text="3", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_6 = Button(render_gf_frame, padx=12, pady=6, text=",", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_7 = Button(render_gf_frame, padx=13, pady=6, text="", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_8 = Button(render_gf_frame, padx=13, pady=6, text="", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        render_gf_input_btn5_9 = Button(render_gf_frame, padx=9, pady=6, text="π", fg=main_text_color, bg=calc_background_color_2, activebackground=calc_background_color_2_hover, activeforeground=main_text_color, cursor='hand2', state='disabled')
+        
+        #Render prvků
+            #Render první řady
+        render_gf_title. grid(row=1, column=0, padx=5, pady=5, columnspan=9, sticky='we')
+        render_gf_title_sep.grid(row=2, column=0, padx=5, pady=2, columnspan=9, sticky='we')
+            #Render druhé řady
+        render_gf_subtitle_1.grid(row=3, column=0, pady=5, padx=5, columnspan=9, sticky='we')
+            #Render třetí řady
+        render_gf_input_btn1_1.grid(row=4, column=0, padx=5, pady=5, sticky='we')
+        render_gf_entry_1_2_6.grid(row=4, column=1, columnspan=5, padx=5, pady=5, sticky='we', ipady=7, ipadx=6)
+        render_gf_input_btn1_7.grid(row=4, column=6, padx=5, pady=5, sticky='we')
+        render_gf_input_btn1_8.grid(row=4, column=7, padx=5, pady=5, sticky='we')
+        render_gf_input_btn1_9.grid(row=4, column=8, padx=5, pady=5, sticky='we')
+            #Render čtvrté řady
+        render_gf_input_btn2_1.grid(row=5, column=0, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_2.grid(row=5, column=1, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_3.grid(row=5, column=2, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_4.grid(row=5, column=3, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_5.grid(row=5, column=4, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_6.grid(row=5, column=5, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_7.grid(row=5, column=6, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_8.grid(row=5, column=7, padx=5, pady=5, sticky='we')
+        render_gf_input_btn2_9.grid(row=5, column=8, padx=5, pady=5, sticky='we')
+            #Render páté řady
+        render_gf_input_btn3_1.grid(row=6, column=0, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_2.grid(row=6, column=1, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_3.grid(row=6, column=2, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_4.grid(row=6, column=3, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_5.grid(row=6, column=4, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_6.grid(row=6, column=5, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_7.grid(row=6, column=6, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_8.grid(row=6, column=7, padx=5, pady=5, sticky='we')
+        render_gf_input_btn3_9.grid(row=6, column=8, padx=5, pady=5, sticky='we')
+            #Render šesté řady
+        render_gf_input_btn4_1.grid(row=7, column=0, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_2.grid(row=7, column=1, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_3.grid(row=7, column=2, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_4.grid(row=7, column=3, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_5.grid(row=7, column=4, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_6.grid(row=7, column=5, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_7.grid(row=7, column=6, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_8.grid(row=7, column=7, padx=5, pady=5, sticky='we')
+        render_gf_input_btn4_9.grid(row=7, column=8, padx=5, pady=5, sticky='we') 
+            #Render sedmé řady
+        render_gf_input_btn5_1.grid(row=8, column=0, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_2.grid(row=8, column=1, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_3.grid(row=8, column=2, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_4.grid(row=8, column=3, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_5.grid(row=8, column=4, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_6.grid(row=8, column=5, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_7.grid(row=8, column=6, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_8.grid(row=8, column=7, padx=5, pady=5, sticky='we')
+        render_gf_input_btn5_9.grid(row=8, column=8, padx=5, pady=5, sticky='we') 
+        
     #Funkce pro vytvoření horní lišty
     def render_upper_bar(self):
         global render_upper_bar_frame, render_upper_list_submenu
@@ -389,7 +506,7 @@ class Render(funcs.Func):
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_title_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
         render_upper_list_submenu.add_separator()
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_1'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_BC())
-        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_BC())
+        render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='normal', command=lambda:self.func_render_GF())
         render_upper_list_submenu.add_separator()
         render_upper_list_submenu.add_command(label="×  "+locale['UB_LSM_option_title_2'], activebackground=upper_bar_frame_submenu_color_hover, activeforeground=main_text_color, state='disabled')
         render_upper_list_submenu.add_separator()

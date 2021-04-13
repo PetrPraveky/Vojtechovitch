@@ -572,7 +572,7 @@ class BasicCalculator():
     
     def BC_geo_acos(self, number_list):
         equal = []
-        x = number_list.index("aco")
+        x = number_list.index("acos")
         if number_list[x-1] == "pi":
             number_list[x-1] = math.pi
         if number_list[x-1] == "e":
