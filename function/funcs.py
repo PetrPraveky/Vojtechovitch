@@ -486,6 +486,168 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
         rend.render_bc_button_4_7.config(padx=10, text='τ', command= lambda: self.func_calc_input('snum', 't'))
         
     
+    def func_gf_clear(self, mode):
+        if mode == "C":
+            rend.render_gf_entry_1_2_6.delete(0, 'end')
+        if mode == "back":
+            current = rend.render_gf_entry_1_2_6.get()
+            if current[-1] in data['char_list']:
+                m = -1
+                for n in range(len(current)):
+                    if str(current[m]) in data['char_list']:
+                        m -= 1
+                        print(1)
+                    else:
+                        m += 1
+                        break
+                    print(m)
+                current = current[:(m)]
+                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                rend.render_gf_entry_1_2_6.insert(0, str(current))
+            else:
+                current = current[:-1]
+                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                rend.render_gf_entry_1_2_6.insert(0, str(current))
+    
+    def func_gf_input(self, mode, val):
+        current = rend.render_gf_entry_1_2_6.get()
+        if mode == "var":
+            if val == "y" or val == "x":
+                if current == "":
+                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                    rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                else:
+                    if current[-1] in data['operators_chars'] or current[-1] == "(" or current[-1] == "|":
+                        rend.render_gf_entry_1_2_6.delete(0, 'end')
+                        rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                    try:
+                        if int(current[-1]) in data['number_list']:
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                        else:
+                            pass
+                    except:
+                        if  str(current[-1]) == "π" or str(current[-1]) == "e" or str(current[-1]) == "τ":
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))   
+                        else:
+                            pass
+                    
+            else:
+                pass
+        elif mode == "num":
+            try:
+                int(val)
+                if str(current) == "0" and val == 0:
+                    pass
+                elif str(current) == "0" and val != 0:
+                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                    rend.render_gf_entry_1_2_6.insert(0, str(val))
+                else:
+                    try:
+                        if str(current[-1]) in data['char_list'] or str(current[-1]) == "e" or str(current[-1]) == "π" or str(current[-1]) == "τ":
+                            pass
+                        else:
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                    except:
+                        if current == "":
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+            except:
+                if str(val) == "E":
+                    try:
+                        if int(current[-1]) in data["number_list"]:
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                        else:
+                            pass
+                    except:
+                        if current == "":
+                            pass
+                        else:
+                            if str(current[-1]) == "e" or str(current[-1]) == "π" or str(current[-1]) == "τ" or str(current[-1]) == "x" or str(current[-1]) == "y":
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(val))
+                            else:
+                                pass
+        elif mode == "snum":
+            if str(val) == "pi":
+                num = "π"
+            elif str(val) == "e":
+                num = "e"
+            elif str(val) == "t":
+                num = "τ"
+            if current == "":
+                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(num))
+            else:
+                if str(current[-1]) in data['operators_chars'] or str(current[-1]) == "(" or str(current[-1]) == "|" or str(current[-1]) == "E":
+                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                    rend.render_gf_entry_1_2_6.insert(0, str(current)+str(num))                    
+        elif mode == "oper":
+            if str(val) == "ADD":
+                oper = "+"
+            elif str(val) == "SUB":
+                oper = "-"
+            elif str(val) == "MUL":
+                oper = "*"
+            elif str(val) == "DIV":
+                oper = "/"
+            if str(val) in data['operators_list'][:4]:
+                if current == "" and str(val) == "SUB":
+                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                    rend.render_gf_entry_1_2_6.insert(0, str(current)+"0-")
+                elif current != "":
+                    if str(current[-1]) in data['operators_chars'] and str(current[-1]) != "!":
+                        if str(current) == "0-":
+                            pass
+                        else:
+                            try:
+                                if str(current[-1]) == "-" and str(current[-2]) == "E" or str(current[-1]) == "-" and str(current[-2]) == "0" and str(current[-3]) == "(":
+                                    pass
+                                else:
+                                    current = current[:-1]
+                                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                    rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                            except:
+                                current = current[:-1]
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                    else:
+                        try:
+                            int(current[-1])
+                            rend.render_gf_entry_1_2_6.delete(0, 'end')
+                            rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                        except:
+                            if current[-1] == "e" or current[-1] == ")" or current[-1] == "|" or current[-1] == "τ" or current[-1] == "π":
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                            elif current[-1] == "x" or current[-1] == "y":
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                            elif current[-1] == "E" and str(val) == "SUB":
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+str(oper))
+                            elif current[-1] == "(" and str(val) == "SUB":
+                                rend.render_gf_entry_1_2_6.delete(0, 'end')
+                                rend.render_gf_entry_1_2_6.insert(0, str(current)+'0-')
+                            else:
+                                pass   
+                            try:
+                                if current[-2] == "E" and current[-1] == "-":
+                                    pass
+                            except:
+                                pass
+                else:
+                    pass
+        elif mode == "add_oper":
+            return
+        elif mode == "equal":
+            return
+        
+    
+    
     def func_unit_mode_change(self, val):  
         if val == "time":
             rend.ucl_var.set(unit_conv[rend.unit_data_list[locale['unit_data'].index(rend.uce_var.get())]][5])
