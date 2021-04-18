@@ -641,6 +641,22 @@ class Func(OpenFile, calc.BasicCalculator, units.UnitConverter):
                                 pass
                 else:
                     pass
+            elif str(val) == "FAC":
+                try:
+                    int(current[-1])
+                    rend.render_gf_entry_1_2_6.delete(0, 'end')
+                    rend.render_gf_entry_1_2_6.insert(0, str(current)+'!')
+                except:
+                    if str(current[-1]) == "e" or str(current[-1]) == "π" or str(current[-1]) == "τ" or current[-1] == ")" or current[-1] == "|":
+                        rend.render_gf_entry_1_2_6.delete(0, 'end')
+                        rend.render_gf_entry_1_2_6.insert(0, str(current)+'!')
+                    elif str(current[-1]) == "x" or str(current[-1]) == "y":
+                        rend.render_gf_entry_1_2_6.delete(0, 'end')
+                        rend.render_gf_entry_1_2_6.insert(0, str(current)+'!')
+                    else:
+                        pass
+            else:
+                pass
         elif mode == "add_oper":
             return
         elif mode == "equal":
